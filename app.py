@@ -7,11 +7,61 @@ import matplotlib.patches as mpatches
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
 
-# --- DISEÑO VISUAL Y ESTILOS GENERALES ---
+# --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(to bottom right, #090d16, #141b2d); }
     h1, h2, h3 { color: #f7fafc !important; text-align: center; font-family: sans-serif; }
+    
+    /* Estilo para los botones de las tarjetas del menú principal */
+    .main-menu-card button {
+        border-radius: 18px !important;
+        font-weight: bold !important;
+        font-size: 22px !important;
+        height: 130px !important;
+        width: 100% !important;
+        color: white !important;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        letter-spacing: 1px;
+    }
+    .main-menu-card button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.7);
+        filter: brightness(1.15);
+        border-color: rgba(255,255,255,0.5) !important;
+    }
+
+    /* --- ESTILO LLAMATIVO, GRANDE Y CENTRADO PARA EL BOTÓN DE CÁLCULO --- */
+    .centered-calc-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 35px 0 25px 0;
+    }
+    .centered-calc-btn button {
+        background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+        color: white !important;
+        font-size: 24px !important;
+        font-weight: 800 !important;
+        padding: 22px 40px !important;
+        border-radius: 40px !important;
+        width: 100% !important;
+        box-shadow: 0 0 25px rgba(255, 75, 43, 0.7) !important;
+        border: 2px solid #ffffff !important;
+        letter-spacing: 1.5px;
+        transition: all 0.3s ease-in-out;
+    }
+    .centered-calc-btn button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 40px rgba(255, 75, 43, 1) !important;
+        filter: brightness(1.2);
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -42,73 +92,50 @@ if st.session_state.pagina_actual == "menu":
         </div>
     """, unsafe_allow_html=True)
 
-    # Estilos CSS de precisión para transformar los botones en tarjetas anchas, rectangulares y de colores sólidos exactos
-    st.markdown("""
-    <style>
-        div.stButton > button {
-            border-radius: 18px !important;
-            font-weight: bold !important;
-            font-size: 22px !important;
-            height: 130px !important;
-            width: 100% !important;
-            color: white !important;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            letter-spacing: 1px;
-        }
-        div.stButton > button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.7);
-            filter: brightness(1.15);
-            border-color: rgba(255,255,255,0.5) !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Columnas laterales para empujar el contenido exactamente al centro de la pantalla (Simetría total)
     _, col_centro, _ = st.columns([1, 2.2, 1])
 
     with col_centro:
-        # Fila superior: Ejercicio 1 (Azul) y Ejercicio 2 (Verde)
         sub_c1, sub_c2 = st.columns(2, gap="medium")
         
         with sub_c1:
+            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
             st.markdown("<style>div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; }</style>", unsafe_allow_html=True)
             if st.button("🔷 EJERCICIO 1"):
                 st.session_state.ejercicio_seleccionado = "Ejercicio 1"
                 st.session_state.pagina_actual = "detalle"
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with sub_c2:
+            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
             st.markdown("<style>div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; }</style>", unsafe_allow_html=True)
             if st.button("🟢 EJERCICIO 2"):
                 st.session_state.ejercicio_seleccionado = "Ejercicio 2"
                 st.session_state.pagina_actual = "detalle"
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
-        # Fila inferior: Ejercicio 3 (Naranja) y Ejercicio 4 (Morado)
         sub_c3, sub_c4 = st.columns(2, gap="medium")
 
         with sub_c3:
+            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
             st.markdown("<style>div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; }</style>", unsafe_allow_html=True)
             if st.button("🔶 EJERCICIO 3"):
                 st.session_state.ejercicio_seleccionado = "Ejercicio 3"
                 st.session_state.pagina_actual = "detalle"
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with sub_c4:
+            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
             st.markdown("<style>div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }</style>", unsafe_allow_html=True)
             if st.button("🟣 EJERCICIO 4"):
                 st.session_state.ejercicio_seleccionado = "Ejercicio 4"
                 st.session_state.pagina_actual = "detalle"
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br><br><br>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #718096; font-size: 14px;'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
@@ -268,8 +295,14 @@ else:
     st.pyplot(fig)
     st.markdown("---")
 
-    # --- MOTOR MATRICIAL 3D ---
-    if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
+    # --- MOTOR MATRICIAL 3D (CON BOTÓN GIGANTE CENTRADO Y LLAMATIVO) ---
+    col_esp1, col_calc, col_esp2 = st.columns([1, 2.5, 1])
+    with col_calc:
+        st.markdown('<div class="centered-calc-btn">', unsafe_allow_html=True)
+        iniciar_calculo = st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    if iniciar_calculo:
         try:
             nodos_clean = nodos_df.dropna(subset=["Nodo", "X (m)", "Y (m)", "Z (m)"])
             barras_clean = barras_df.dropna(subset=["Nodo_Inicial", "Nodo_Final"])
