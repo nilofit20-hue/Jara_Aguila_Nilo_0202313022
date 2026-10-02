@@ -35,43 +35,53 @@ with st.sidebar:
     )
     
     st.markdown("---")
-    st.markdown("**Universidad Nacional del Santa**[cite: 21]\n*Curso: Análisis Estructural II*\nDesarrollado por: *Nilo Jara*[cite: 21]")
+    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*[cite: 21]\nDesarrollado por: *Nilo Jara*[cite: 21]")
 
 # --- TÍTULO PRINCIPAL ---
 st.title(f"🏗 SYNCRET: {ejercicio_seleccionado}")
 st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*[cite: 21]")
 st.markdown("---")
 
-# --- CARGAR DATOS PREESTABLECIDOS PARA CADA EJERCICIO ---
+# --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
 if "Ejercicio 1" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 1:** Sistema estructural espacial piramidal con 5 nodos, apoyos fijos en la base, y cargas aplicadas en el nudo superior ($Fx = 60\text{ KN}$, $Fz = -80\text{ KN}$)[cite: 22, 23].")
+    st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior D con carga vertical de 20 Ton.")
     
+    # Si subes una imagen llamada 'ej1.png' a tu repositorio de GitHub, aparecerá aquí:
+    try:
+        st.image("ej1.png", caption="Esquema Referencial - Ejercicio 1", width=500)
+    except:
+        st.warning("⚠️ Sube una imagen llamada 'ej1.png' a tu repositorio de GitHub para mostrar el gráfico aquí.")
+
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5], 
-        "X (m)": [-4.0, 4.0, 4.0, -4.0, 0.0], 
-        "Y (m)": [-3.0, -3.0, 3.0, 3.0, 0.0],
-        "Z (m)": [0.0, 0.0, 0.0, 0.0, 10.0],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0, 60.0], 
-        "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (KN)": [0.0, 0.0, 0.0, 0.0, -80.0],
-        "Restringido_X": [True, True, True, True, False], 
-        "Restringido_Y": [True, True, True, True, False],
-        "Restringido_Z": [True, True, True, True, False]
+        "Nodo": [1, 2, 3, 4], 
+        "X (m)": [0.0, 2.0, 1.0, 0.8], 
+        "Y (m)": [0.0, 0.0, 1.6, 1.0],
+        "Z (m)": [0.0, 0.0, 0.0, 2.5],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0], 
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, -20.0],
+        "Restringido_X": [True, True, True, False], 
+        "Restringido_Y": [True, True, True, False],
+        "Restringido_Z": [True, True, True, False]
     })
     
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4], 
-        "Nodo_Inicial": [1, 2, 3, 4], 
-        "Nodo_Final": [5, 5, 5, 5],
-        "Área (m2)": [0.001, 0.001, 0.001, 0.001], 
-        "E (KN/m2)": [2e8, 2e8, 2e8, 2e8]
+        "Barra": [1, 2, 3, 4, 5, 6], 
+        "Nodo_Inicial": [1, 2, 1, 2, 3, 1], 
+        "Nodo_Final": [4, 4, 2, 3, 4, 3],
+        "Área (m2)": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
+        "E (ton/m2)": [2e7, 2e7, 2e7, 2e7, 2e7, 2e7]
     })
 
 elif "Ejercicio 2" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario preconfigurado con perfil W10x12 y cargas de control[cite: 24].")
+    st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12[cite: 24].")
+    try:
+        st.image("ej2.png", caption="Esquema Referencial - Ejercicio 2", width=500)
+    except:
+        pass
+    
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4], 
-        "X (m)": [0.0, 5.0, 5.0, 0.0], "Y (m)": [0.0, 0.0, 4.0, 4.0], "Z (m)": [0.0, 0.0, 0.0, 12.0],
+        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 5.0, 5.0, 0.0], "Y (m)": [0.0, 0.0, 4.0, 4.0], "Z (m)": [0.0, 0.0, 0.0, 12.0],
         "Carga Fx (KN)": [0.0, 0.0, 0.0, 1600.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 10.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, 40.0],
         "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
     })
@@ -81,7 +91,12 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Sistema estructural espacial terciario con configuración tridimensional general.")
+    st.info("📌 **Enunciado Ejercicio 3:** Sistema estructural espacial terciario.")
+    try:
+        st.image("ej3.png", caption="Esquema Referencial - Ejercicio 3", width=500)
+    except:
+        pass
+
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3], "X (m)": [0.0, 4.0, 2.0], "Y (m)": [0.0, 0.0, 3.0], "Z (m)": [0.0, 0.0, 6.0],
         "Carga Fx (KN)": [0.0, 0.0, 15.0], "Carga Fy (KN)": [0.0, 0.0, -10.0], "Carga Fz (KN)": [0.0, 0.0, -50.0],
@@ -93,7 +108,12 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
     })
 
 else: # Ejercicio 4
-    st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial con cargas tridimensionales distribuidas.")
+    st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
+    try:
+        st.image("ej4.png", caption="Esquema Referencial - Ejercicio 4", width=500)
+    except:
+        pass
+
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 6.0, 3.0, 3.0], "Y (m)": [0.0, 0.0, 5.0, 2.5], "Z (m)": [0.0, 0.0, 0.0, 9.0],
         "Carga Fx (KN)": [0.0, 0.0, 0.0, 40.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 20.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -75.0],
@@ -152,9 +172,16 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         for i, row in nodos_clean.iterrows():
             idx = nodo_idx[row["Nodo"]]
-            F[3*idx]     = float(row["Carga Fx (KN)"]) if not pd.isna(row["Carga Fx (KN)"]) else 0.0
-            F[3*idx + 1] = float(row["Carga Fy (KN)"]) if not pd.isna(row["Carga Fy (KN)"]) else 0.0
-            F[3*idx + 2] = float(row["Carga Fz (KN)"]) if not pd.isna(row["Carga Fz (KN)"]) else 0.0
+            F[3*idx]     = float(row["Carga Fx (ton)"] if "ton" in nodos_df.columns or "ton" in str(nodos_df.columns)) if not pd.isna(row.get("Carga Fx (ton)", row.get("Carga Fx (KN)", 0))) else 0.0
+            # Usar claves seguras para unidades
+            fx_col = "Carga Fx (ton)" if "Carga Fx (ton)" in nodos_clean.columns else "Carga Fx (KN)"
+            fy_col = "Carga Fy (ton)" if "Carga Fy (ton)" in nodos_clean.columns else "Carga Fy (KN)"
+            fz_col = "Carga Fz (ton)" if "Carga Fz (ton)" in nodos_clean.columns else "Carga Fz (KN)"
+            
+            F[3*idx]     = float(row[fx_col]) if not pd.isna(row[fx_col]) else 0.0
+            F[3*idx + 1] = float(row[fy_col]) if not pd.isna(row[fy_col]) else 0.0
+            F[3*idx + 2] = float(row[fz_col]) if not pd.isna(row[fz_col]) else 0.0
+            
             if row["Restringido_X"]: gdl_restringidos.append(3*idx)
             if row["Restringido_Y"]: gdl_restringidos.append(3*idx + 1)
             if row["Restringido_Z"]: gdl_restringidos.append(3*idx + 2)
@@ -169,7 +196,9 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             dx, dy, dz = n2["X (m)"] - n1["X (m)"], n2["Y (m)"] - n1["Y (m)"], n2["Z (m)"] - n1["Z (m)"]
             L = np.sqrt(dx**2 + dy**2 + dz**2)
             l, m, n_dir = dx/L, dy/L, dz/L
-            EA_L = (barra["Área (m2)"] * barra["E (KN/m2)"]) / L
+            
+            e_col = "E (ton/m2)" if "E (ton/m2)" in barras_clean.columns else "E (KN/m2)"
+            EA_L = (barra["Área (m2)"] * barra[e_col]) / L
             v = np.array([l, m, n_dir])
             mat = np.outer(v, v)
             k_local = EA_L * np.block([[mat, -mat], [-mat, mat]])
@@ -197,7 +226,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             l, m, n_dir = dx/L, dy/L, dz/L
             u = np.array([U[3*idx1], U[3*idx1+1], U[3*idx1+2], U[3*idx2], U[3*idx2+1], U[3*idx2+2]])
             delta_L = l*(u[3] - u[0]) + m*(u[4] - u[1]) + n_dir*(u[5] - u[2])
-            N = np.round((barra["Área (m2)"] * barra["E (KN/m2)"] / L) * delta_L, 4)
+            N = np.round((barra["Área (m2)"] * barra[e_col] / L) * delta_L, 4)
             fuerzas_axiales.append(N)
             estados.append("Tensión (Tracción)" if N > 0 else ("Compresión" if N < 0 else "Nulo"))
 
@@ -208,12 +237,13 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         with tab1:
             res_col1, res_col2 = st.columns(2)
+            unit_label = "Unidades"
             with res_col1:
                 st.write("**Desplazamientos Nodales 3D (m)**")
                 desp_df = pd.DataFrame({"Nodo": nodos_clean["Nodo"].astype(int), "Dx": [f"{x:.6f}" for x in U[0::3]], "Dy": [f"{x:.6f}" for x in U[1::3]], "Dz": [f"{x:.6f}" for x in U[2::3]]})
                 st.dataframe(desp_df, hide_index=True, use_container_width=True)
             with res_col2:
-                st.write("**Reacciones en Apoyos 3D (KN)**")
+                st.write("**Reacciones en Apoyos 3D**")
                 reac_df = pd.DataFrame({"Nodo": nodos_clean["Nodo"].astype(int), "Rx": np.round(R[0::3], 3), "Ry": np.round(R[1::3], 3), "Rz": np.round(R[2::3], 3)})
                 reac_df = reac_df[(nodos_clean["Restringido_X"].values) | (nodos_clean["Restringido_Y"].values) | (nodos_clean["Restringido_Z"].values)]
                 st.dataframe(reac_df, hide_index=True, use_container_width=True)
@@ -226,7 +256,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
 
         with tab3:
             st.write("**Fuerzas Internas en los Elementos**")
-            fuerzas_df = pd.DataFrame({"Barra": barras_clean["Barra"].astype(int), "Nodo Inicial": barras_clean["Nodo_Inicial"].astype(int), "Nodo Final": barras_clean["Nodo_Final"].astype(int), "Fuerza Axial (KN)": fuerzas_axiales, "Estado": estados})
+            fuerzas_df = pd.DataFrame({"Barra": barras_clean["Barra"].astype(int), "Nodo Inicial": barras_clean["Nodo_Inicial"].astype(int), "Nodo Final": barras_clean["Nodo_Final"].astype(int), "Fuerza Axial": fuerzas_axiales, "Estado": estados})
             st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
         with tab4:
@@ -239,7 +269,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
                 N = fuerzas_axiales[idx]
                 color = '#3498db' if N > 0 else ('#e74c3c' if N < 0 else '#95a5a6')
-                etiqueta = f"{abs(N):.2f} KN (T)" if N > 0 else (f"{abs(N):.2f} KN (C)" if N < 0 else "0.00 KN")
+                etiqueta = f"{abs(N):.2f} (T)" if N > 0 else (f"{abs(N):.2f} (C)" if N < 0 else "0.00")
                 ax2.plot([n1["X (m)"], n2["X (m)"]], [n1["Y (m)"], n2["Y (m)"]], [n1["Z (m)"], n2["Z (m)"]], color=color, lw=4)
                 ax2.text(np.mean([n1["X (m)"], n2["X (m)"]]), np.mean([n1["Y (m)"], n2["Y (m)"]]), np.mean([n1["Z (m)"], n2["Z (m)"]]), etiqueta, color='black', fontsize=9, fontweight='bold')
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], nodos_clean["Z (m)"], c='black', s=50)
