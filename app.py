@@ -31,7 +31,12 @@ with st.sidebar:
     
     ejercicio_seleccionado = st.radio(
         "Ejercicios del Trabajo:",
-        ["Ejercicio 1 (Torre Piramidal Base Triangular)", "Ejercicio 2 (Torre Espacial de Clases)", "Ejercicio 3 (Armadura Espacial Múltiple)", "Ejercicio 4"]
+        [
+            "Ejercicio 1 (Torre Piramidal Base Triangular)", 
+            "Ejercicio 2 (Torre Espacial de Clases)", 
+            "Ejercicio 3 (Armadura Espacial Múltiple)", 
+            "Ejercicio 4 (Torre Espacial Simétrica Avanzada)"
+        ]
     )
     
     st.markdown("---")
@@ -78,15 +83,14 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio.")
 
-    # Geometría tridimensional perfectamente estable y validada para el Ejercicio 3
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5, 6, 7], # N1, N2, N3 (Base), N4, N5 (Intermedio), N6, N7 (Superior)
+        "Nodo": [1, 2, 3, 4, 5, 6, 7], 
         "X (m)": [0.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0],
         "Y (m)": [0.0, 3.0, 3.0, 0.0, 3.0, 0.0, 3.0],
         "Z (m)": [0.0, 0.0, 0.0, 4.0, 4.0, 8.0, 8.0],
         "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0], # Carga aplicada de -3.5 Ton en N6 (Nodo 6)
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0],
         "Restringido_X": [True, True, True, False, False, False, False],
         "Restringido_Y": [True, True, True, False, False, False, False],
         "Restringido_Z": [True, True, True, False, False, False, False]
@@ -99,19 +103,29 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "E (ton/m2)":   [2.1e7]*12
     })
 
-else:
-    st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
-    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
-    except: pass
+else: # Ejercicio 4 (Nuevo diseño simétrico avanzado idéntico en estilo)
+    st.info("📌 **Enunciado Ejercicio 4:** Torre espacial simétrica de base rectangular con 4 apoyos en la base, nivel intermedio y carga lateral y vertical en la cúspide.")
+    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
+    except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio.")
 
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 6.0, 3.0, 3.0], "Y (m)": [0.0, 0.0, 5.0, 2.5], "Z (m)": [0.0, 0.0, 0.0, 9.0],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 40.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 20.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -75.0],
-        "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
+        "Nodo": [1, 2, 3, 4, 5, 6], 
+        "X (m)": [-2.0, 2.0, 2.0, -2.0, 0.0, 0.0],
+        "Y (m)": [-2.0, -2.0, 2.0, 2.0, 0.0, 0.0],
+        "Z (m)": [0.0, 0.0, 0.0, 0.0, 5.0, 8.0],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 5.0, 10.0],
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -15.0],
+        "Restringido_X": [True, True, True, True, False, False],
+        "Restringido_Y": [True, True, True, True, False, False],
+        "Restringido_Z": [True, True, True, True, False, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 3], "Nodo_Final": [4, 4, 4],
-        "Área (m2)": [0.0015]*3, "E (KN/m2)": [2e8]*3
+        "Barra": [1, 2, 3, 4, 5, 6, 7, 8], 
+        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 5, 5], 
+        "Nodo_Final":   [5, 5, 5, 5, 6, 6, 6, 3],
+        "Área (m2)":    [0.02]*8, 
+        "E (ton/m2)":   [2e7]*8
     })
 
 col_nodos, col_barras = st.columns(2)
@@ -198,7 +212,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         K_libres = K[np.ix_(gdl_libres, gdl_libres)]
         F_libres = F[gdl_libres]
         
-        # Uso de pseudo-inversa (pinv) para estabilidad numérica ante estructuras isostáticas o complejas
         U_libres = np.linalg.pinv(K_libres).dot(F_libres)
         
         U = np.zeros(n_gdl)
