@@ -34,8 +34,8 @@ with st.sidebar:
         [
             "Ejercicio 1 (Torre Piramidal Base Triangular)", 
             "Ejercicio 2 (Torre Espacial de Clases)", 
-            "Ejercicio 3 (Armadura Espacial Múltiple)", 
-            "Ejercicio 4 (Torre Espacial Simétrica Avanzada)"
+            "Ejercicio 3 (Pirámide Central con 3 Apoyos)", 
+            "Ejercicio 4"
         ]
     )
     
@@ -49,7 +49,7 @@ st.markdown("---")
 
 # --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
 if "Ejercicio 1" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior D con carga vertical de 20 Ton.")
+    st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.")
     try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
     except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio.")
 
@@ -79,53 +79,44 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Armadura espacial de varios niveles con apoyos en base (N1, N2, N3). Carga vertical de 3.5 Ton en el nudo superior C (N6). Considere $E = 2.1 \times 10^7\text{ Ton/m}^2$ y $A = 0.15\text{ m}^2$.")
+    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) y un nodo central conectado a la cúspide (D) con una carga vertical de 18 Ton.")
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio.")
 
+    # Nodos: 1:A (apoyo), 2:B (apoyo), 3:C (apoyo), 4:Centro base, 5:D (cúspide superior con carga)
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5, 6, 7], 
-        "X (m)": [0.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0],
-        "Y (m)": [0.0, 3.0, 3.0, 0.0, 3.0, 0.0, 3.0],
-        "Z (m)": [0.0, 0.0, 0.0, 4.0, 4.0, 8.0, 8.0],
-        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0],
-        "Restringido_X": [True, True, True, False, False, False, False],
-        "Restringido_Y": [True, True, True, False, False, False, False],
-        "Restringido_Z": [True, True, True, False, False, False, False]
-    })
-    barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 
-        "Nodo_Inicial": [1, 2, 2, 3, 4, 4, 5, 5, 6, 4, 5, 3], 
-        "Nodo_Final":   [4, 4, 5, 5, 6, 7, 6, 7, 7, 5, 6, 7],
-        "Área (m2)":    [0.15]*12, 
-        "E (ton/m2)":   [2.1e7]*12
-    })
-
-else: # Ejercicio 4 (Nuevo diseño simétrico avanzado idéntico en estilo)
-    st.info("📌 **Enunciado Ejercicio 4:** Torre espacial simétrica de base rectangular con 4 apoyos en la base, nivel intermedio y carga lateral y vertical en la cúspide.")
-    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
-    except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio.")
-
-    nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5, 6], 
-        "X (m)": [-2.0, 2.0, 2.0, -2.0, 0.0, 0.0],
-        "Y (m)": [-2.0, -2.0, 2.0, 2.0, 0.0, 0.0],
-        "Z (m)": [0.0, 0.0, 0.0, 0.0, 5.0, 8.0],
-        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 5.0, 10.0],
-        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -15.0],
-        "Restringido_X": [True, True, True, True, False, False],
-        "Restringido_Y": [True, True, True, True, False, False],
-        "Restringido_Z": [True, True, True, True, False, False]
+        "Nodo": [1, 2, 3, 4, 5], 
+        "X (m)": [0.0, 4.0, 2.0, 2.0, 2.0],
+        "Y (m)": [0.0, 0.0, 3.0, 1.5, 1.5],
+        "Z (m)": [0.0, 0.0, 0.0, 0.0, 3.0],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, -18.0], # Carga de -18 Ton en el nodo superior D (Nodo 5)
+        "Restringido_X": [True, True, True, False, False],
+        "Restringido_Y": [True, True, True, False, False],
+        "Restringido_Z": [True, True, True, False, False]
     })
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3, 4, 5, 6, 7, 8], 
-        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 5, 5], 
-        "Nodo_Final":   [5, 5, 5, 5, 6, 6, 6, 3],
-        "Área (m2)":    [0.02]*8, 
+        "Nodo_Inicial": [1, 2, 1, 2, 3, 1, 2, 3], 
+        "Nodo_Final":   [2, 3, 4, 4, 4, 5, 5, 5],
+        "Área (m2)":    [0.01]*8, 
         "E (ton/m2)":   [2e7]*8
+    })
+
+else:
+    st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
+    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
+    except: pass
+
+    nodos_default = pd.DataFrame({
+        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 6.0, 3.0, 3.0], "Y (m)": [0.0, 0.0, 5.0, 2.5], "Z (m)": [0.0, 0.0, 0.0, 9.0],
+        "Carga Fx (KN)": [0.0, 0.0, 0.0, 40.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 20.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -75.0],
+        "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
+    })
+    barras_default = pd.DataFrame({
+        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 3], "Nodo_Final": [4, 4, 4],
+        "Área (m2)": [0.0015]*3, "E (KN/m2)": [2e8]*3
     })
 
 col_nodos, col_barras = st.columns(2)
