@@ -35,23 +35,23 @@ with st.sidebar:
             "Ejercicio 1 (Torre Piramidal Base Triangular)", 
             "Ejercicio 2 (Torre Espacial de Clases)", 
             "Ejercicio 3 (Pirámide Central con 3 Apoyos)", 
-            "Ejercicio 4"
+            "Ejercicio 4 (Torre Piramidal con 4 Apoyos)"
         ]
     )
     
     st.markdown("---")
-    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*[cite: 21]\nDesarrollado por: *Nilo Jara*[cite: 21]")
+    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*\nDesarrollado por: *Nilo Jara*")
 
 # --- TÍTULO PRINCIPAL ---
 st.title(f"🏗 SYNCRET: {ejercicio_seleccionado}")
-st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*[cite: 21]")
+st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*")
 st.markdown("---")
 
 # --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
 if "Ejercicio 1" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.")
     try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
-    except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio.")
+    except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -64,9 +64,9 @@ if "Ejercicio 1" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 2" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 2 (Clase):** Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN[cite: 14].")
+    st.info("📌 **Enunciado Ejercicio 2 (Clase):** Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.")
     try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", width=600)
-    except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio.")
+    except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
     
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4, 5], "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
@@ -79,11 +79,10 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) y un nodo central conectado a la cúspide (D) con una carga vertical de 18 Ton.")
+    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.")
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
-    except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio.")
+    except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
 
-    # Nodos: 1:A (apoyo), 2:B (apoyo), 3:C (apoyo), 4:Centro base, 5:D (cúspide superior con carga)
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4, 5], 
         "X (m)": [0.0, 4.0, 2.0, 2.0, 2.0],
@@ -91,7 +90,7 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "Z (m)": [0.0, 0.0, 0.0, 0.0, 3.0],
         "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0],
         "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, -18.0], # Carga de -18 Ton en el nodo superior D (Nodo 5)
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, -18.0],
         "Restringido_X": [True, True, True, False, False],
         "Restringido_Y": [True, True, True, False, False],
         "Restringido_Z": [True, True, True, False, False]
@@ -104,19 +103,29 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "E (ton/m2)":   [2e7]*8
     })
 
-else:
-    st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
-    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
-    except: pass
+else: # Ejercicio 4
+    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.")
+    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
+    except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 6.0, 3.0, 3.0], "Y (m)": [0.0, 0.0, 5.0, 2.5], "Z (m)": [0.0, 0.0, 0.0, 9.0],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 40.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 20.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -75.0],
-        "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
+        "Nodo": [1, 2, 3, 4, 5, 6], 
+        "X (m)": [0.0, 5.0, 5.0, 0.0, 2.5, 0.0],
+        "Y (m)": [0.0, 0.0, 3.0, 3.0, 1.5, 0.0],
+        "Z (m)": [0.0, 0.0, 0.0, 0.0, 0.0, 3.5],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -14.0],
+        "Restringido_X": [True, True, True, True, False, False],
+        "Restringido_Y": [True, True, True, True, False, False],
+        "Restringido_Z": [True, True, True, True, False, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 3], "Nodo_Final": [4, 4, 4],
-        "Área (m2)": [0.0015]*3, "E (KN/m2)": [2e8]*3
+        "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 
+        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3], 
+        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 6, 6, 6],
+        "Área (m2)":    [0.01]*11, 
+        "E (ton/m2)":   [2e7]*11
     })
 
 col_nodos, col_barras = st.columns(2)
@@ -258,6 +267,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             ax2 = fig2.add_subplot(projection='3d')
             fig2.patch.set_facecolor('#f0f2f6')
             
+            # Dibujar elementos estructurales con colores de esfuerzo
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -269,6 +279,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], nodos_clean["Z (m)"], c='black', s=50)
 
+            # Dibujar cuadro flotante con las reacciones en cada apoyo
             for idx, row in nodos_clean.iterrows():
                 n_idx = nodo_idx[int(row["Nodo"])]
                 rx = R[3*n_idx]
