@@ -103,8 +103,8 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "E (ton/m2)":   [2e7]*8
     })
 
-else: # Ejercicio 4
-    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.")
+else: # Ejercicio 4 corregido y alineado exactamente a la figura
+    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base (A, B, C) de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.")
     try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
@@ -115,15 +115,15 @@ else: # Ejercicio 4
         "Z (m)": [0.0, 0.0, 0.0, 0.0, 0.0, 3.5],
         "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -14.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -14.0], # Carga vertical de 14 Tn en N6 (Nodo D)
         "Restringido_X": [True, True, True, True, False, False],
         "Restringido_Y": [True, True, True, True, False, False],
         "Restringido_Z": [True, True, True, True, False, False]
     })
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 
-        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3], 
-        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 6, 6, 6],
+        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 6, 6, 6], 
+        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 1, 2, 3], # Conectado correctamente a la base y cúspide D (N6)
         "Área (m2)":    [0.01]*11, 
         "E (ton/m2)":   [2e7]*11
     })
@@ -267,7 +267,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             ax2 = fig2.add_subplot(projection='3d')
             fig2.patch.set_facecolor('#f0f2f6')
             
-            # Dibujar elementos estructurales con colores de esfuerzo
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -279,7 +278,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], nodos_clean["Z (m)"], c='black', s=50)
 
-            # Dibujar cuadro flotante con las reacciones en cada apoyo
             for idx, row in nodos_clean.iterrows():
                 n_idx = nodo_idx[int(row["Nodo"])]
                 rx = R[3*n_idx]
