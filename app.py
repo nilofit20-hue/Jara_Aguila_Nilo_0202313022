@@ -47,9 +47,9 @@ if "Ejercicio 1" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior D con carga vertical de 20 Ton.")
     
     try:
-        st.image("ej1.png", caption="Esquema Referencial - Ejercicio 1", width=500)
+        st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
     except:
-        st.warning("⚠️ Sube una imagen llamada 'ej1.png' a tu repositorio de GitHub para mostrar el gráfico aquí.")
+        st.warning("⚠️ No se pudo cargar la imagen 'ej1.jpg'.")
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], 
@@ -58,7 +58,7 @@ if "Ejercicio 1" in ejercicio_seleccionado:
         "Z (m)": [0.0, 0.0, 0.0, 2.5],
         "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], 
         "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (KN)": [0.0, 0.0, 0.0, -200.0], # Ajustado a unidades consistentes (o KN)
+        "Carga Fz (KN)": [0.0, 0.0, 0.0, -200.0],
         "Restringido_X": [True, True, True, False], 
         "Restringido_Y": [True, True, True, False],
         "Restringido_Z": [True, True, True, False]
@@ -75,7 +75,7 @@ if "Ejercicio 1" in ejercicio_seleccionado:
 elif "Ejercicio 2" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12.")
     try:
-        st.image("ej2.png", caption="Esquema Referencial - Ejercicio 2", width=500)
+        st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", width=500)
     except:
         pass
     
@@ -92,7 +92,7 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
 elif "Ejercicio 3" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 3:** Sistema estructural espacial terciario.")
     try:
-        st.image("ej3.png", caption="Esquema Referencial - Ejercicio 3", width=500)
+        st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=500)
     except:
         pass
 
@@ -109,7 +109,7 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
 else: # Ejercicio 4
     st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
     try:
-        st.image("ej4.png", caption="Esquema Referencial - Ejercicio 4", width=500)
+        st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
     except:
         pass
 
