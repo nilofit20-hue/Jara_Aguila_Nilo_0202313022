@@ -79,7 +79,7 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.")
+    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D[cite: 18].")
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
 
@@ -103,8 +103,8 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "E (ton/m2)":   [2e7]*8
     })
 
-else: # Ejercicio 4 corregido y alineado exactamente a la figura
-    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base (A, B, C) de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.")
+else: # Ejercicio 4 corregido con la conectividad completa de N4
+    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D[cite: 19].")
     try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
@@ -115,17 +115,17 @@ else: # Ejercicio 4 corregido y alineado exactamente a la figura
         "Z (m)": [0.0, 0.0, 0.0, 0.0, 0.0, 3.5],
         "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -14.0], # Carga vertical de 14 Tn en N6 (Nodo D)
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -14.0],
         "Restringido_X": [True, True, True, True, False, False],
         "Restringido_Y": [True, True, True, True, False, False],
         "Restringido_Z": [True, True, True, True, False, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 
-        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 6, 6, 6], 
-        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 1, 2, 3], # Conectado correctamente a la base y cúspide D (N6)
-        "Área (m2)":    [0.01]*11, 
-        "E (ton/m2)":   [2e7]*11
+        "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
+        "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 5], 
+        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 6, 6, 6, 6, 6], # N4 (Nodo 4) conectado correctamente al perímetro y a la cúspide (N6)
+        "Área (m2)":    [0.01]*13, 
+        "E (ton/m2)":   [2e7]*13
     })
 
 col_nodos, col_barras = st.columns(2)
