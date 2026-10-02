@@ -74,29 +74,29 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Armadura espacial de varios niveles con apoyos en E, F, G. Carga vertical de 3.5 Ton en el nudo C. Considere $E = 2.1 \times 10^7\text{ Ton/m}^2$ y $A = 0.15\text{ m}^2$.")
+    st.info("📌 **Enunciado Ejercicio 3:** Armadura espacial de varios niveles con apoyos en E, F, G. Carga vertical de 3.5 Ton en el nudo C. $E = 2.1 \times 10^7\text{ Ton/m}^2$, $A = 0.15\text{ m}^2$.")
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio.")
 
-    # Nodos aproximados basados en la geometría 3D del gráfico (E, F, G en base z=0; A, B en z=4; C, D en z=8)
+    # Geometría corregida y estable 3D para el Ejercicio 3 (Nodos N1 a N7 de la imagen)
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5, 6, 7], # 1:E, 2:F, 3:G, 4:A, 5:B, 6:C, 7:D
-        "X (m)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Y (m)": [0.0, 3.0, 6.0, 0.0, 3.0, 0.0, 3.0],
-        "Z (m)": [0.0, 0.0, 0.0, 4.0, 4.0, 8.0, 8.0],
+        "Nodo": [1, 2, 3, 4, 5, 6, 7], 
+        "X (m)": [0.0, 0.0, 3.0, 0.0, 3.0, 0.0, 3.0], # Eje X (ancho/profundidad)
+        "Y (m)": [0.0, 3.0, 3.0, 0.0, 3.0, 0.0, 3.0], # Eje Y
+        "Z (m)": [0.0, 0.0, 0.0, 4.0, 4.0, 8.0, 8.0], # Z: Base(0), Intermedio(4), Superior(8)
         "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0], # Carga de 3.5 Ton en C (Nodo 6)
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0], # -3.5 Ton en Nodo 6 (C)
         "Restringido_X": [True, True, True, False, False, False, False],
         "Restringido_Y": [True, True, True, False, False, False, False],
         "Restringido_Z": [True, True, True, False, False, False, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4, 5, 6, 7, 8], 
-        "Nodo_Inicial": [1, 1, 2, 2, 3, 4, 4, 5], 
-        "Nodo_Final": [4, 5, 4, 5, 5, 6, 7, 7],
-        "Área (m2)": [0.15]*8, 
-        "E (ton/m2)": [2.1e7]*8
+        "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+        "Nodo_Inicial": [1, 2, 2, 3, 1, 4, 4, 5, 6, 4], 
+        "Nodo_Final":   [4, 4, 5, 5, 5, 6, 7, 7, 7, 5],
+        "Área (m2)":    [0.15]*10, 
+        "E (ton/m2)":   [2.1e7]*10
     })
 
 else:
