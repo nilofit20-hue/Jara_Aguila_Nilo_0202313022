@@ -31,60 +31,57 @@ with st.sidebar:
     
     ejercicio_seleccionado = st.radio(
         "Ejercicios del Trabajo:",
-        ["Ejercicio 1 (Torre Piramidal 3D)", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"]
+        ["Ejercicio 1 (Torre Piramidal Base Triangular)", "Ejercicio 2 (Torre Espacial de Clases)", "Ejercicio 3", "Ejercicio 4"]
     )
     
     st.markdown("---")
-    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*\nDesarrollado por: *Nilo Jara*")
+    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*[cite: 21]\nDesarrollado por: *Nilo Jara*[cite: 21]")
 
 # --- TÍTULO PRINCIPAL ---
 st.title(f"🏗 SYNCRET: {ejercicio_seleccionado}")
-st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*")
+st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*[cite: 21]")
 st.markdown("---")
 
 # --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
 if "Ejercicio 1" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior D con carga vertical de 20 Ton.")
-    
-    try:
-        st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
-    except:
-        st.warning("⚠️ No se encontró la imagen 'ej1.jpg' en el repositorio.")
+    try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
+    except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio.")
 
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4], 
-        "X (m)": [0.0, 2.0, 1.0, 0.8], 
-        "Y (m)": [0.0, 0.0, 1.6, 1.0],
-        "Z (m)": [0.0, 0.0, 0.0, 2.5],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], 
-        "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (KN)": [0.0, 0.0, 0.0, -20.0],
-        "Restringido_X": [True, True, True, False], 
-        "Restringido_Y": [True, True, True, False],
-        "Restringido_Z": [True, True, True, False]
-    })
-    
-    barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4, 5, 6], 
-        "Nodo_Inicial": [1, 2, 1, 2, 3, 1], 
-        "Nodo_Final": [4, 4, 2, 3, 4, 3],
-        "Área (m2)": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
-        "E (KN/m2)": [2e7, 2e7, 2e7, 2e7, 2e7, 2e7]
-    })
-
-elif "Ejercicio 2" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12.")
-    try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", width=500)
-    except: pass
-    
-    nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 5.0, 5.0, 0.0], "Y (m)": [0.0, 0.0, 4.0, 4.0], "Z (m)": [0.0, 0.0, 0.0, 12.0],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 1600.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 10.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, 40.0],
+        "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
+        "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -20.0],
         "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 3], "Nodo_Final": [4, 4, 4],
-        "Área (m2)": [0.01, 0.01, 0.01], "E (KN/m2)": [2e8, 2e8, 2e8]
+        "Barra": [1, 2, 3, 4, 5, 6], "Nodo_Inicial": [1, 2, 1, 2, 3, 1], "Nodo_Final": [4, 4, 2, 3, 4, 3],
+        "Área (m2)": [0.01]*6, "E (KN/m2)": [2e7]*6
+    })
+
+elif "Ejercicio 2" in ejercicio_seleccionado:
+    st.info("📌 **Enunciado Ejercicio 2 (Clase):** Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN (en X) y 80 KN (en Y) en el nudo superior. $A = 0.001\text{ m}^2$, $E = 2.00 \times 10^8\text{ KN/m}^2$[cite: 14].")
+    try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Diapositivas de Clase)", width=600)
+    except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio.")
+    
+    # Nodos según tus diapositivas de clase (Apoyos base 1, 2, 4, 5 y cúspide 3)
+    nodos_default = pd.DataFrame({
+        "Nodo": [1, 2, 3, 4, 5], 
+        "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], 
+        "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], 
+        "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
+        "Carga Fx (KN)": [0.0, 0.0, 60.0, 0.0, 0.0], 
+        "Carga Fy (KN)": [0.0, 0.0, -80.0, 0.0, 0.0], # Nota: En el gráfico 60KN es X y 80KN viene de la dirección Y
+        "Carga Fz (KN)": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "Restringido_X": [True, True, False, True, True], 
+        "Restringido_Y": [True, True, False, True, True], 
+        "Restringido_Z": [True, True, False, True, True]
+    })
+    barras_default = pd.DataFrame({
+        "Barra": [1, 2, 3, 4], 
+        "Nodo_Inicial": [1, 2, 4, 5], 
+        "Nodo_Final": [3, 3, 3, 3],
+        "Área (m2)": [0.001, 0.001, 0.001, 0.001], 
+        "E (KN/m2)": [2e8, 2e8, 2e8, 2e8]
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
@@ -99,7 +96,7 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
     })
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 1], "Nodo_Final": [2, 3, 3],
-        "Área (m2)": [0.002, 0.002, 0.002], "E (KN/m2)": [2e8, 2e8, 2e8]
+        "Área (m2)": [0.002]*3, "E (KN/m2)": [2e8]*3
     })
 
 else:
@@ -114,7 +111,7 @@ else:
     })
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 3], "Nodo_Final": [4, 4, 4],
-        "Área (m2)": [0.0015, 0.0015, 0.0015], "E (KN/m2)": [2e8, 2e8, 2e8]
+        "Área (m2)": [0.0015]*3, "E (KN/m2)": [2e8]*3
     })
 
 col_nodos, col_barras = st.columns(2)
@@ -255,7 +252,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             ax2 = fig2.add_subplot(projection='3d')
             fig2.patch.set_facecolor('#f0f2f6')
             
-            # Dibujar barras y etiquetas (T)/(C)
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -267,7 +263,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], nodos_clean["Z (m)"], c='black', s=50)
 
-            # Dibujar etiquetas de Reacciones en los Apoyos 3D
             for idx, row in nodos_clean.iterrows():
                 n_idx = nodo_idx[int(row["Nodo"])]
                 rx = R[3*n_idx]
