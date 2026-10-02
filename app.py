@@ -49,7 +49,7 @@ if "Ejercicio 1" in ejercicio_seleccionado:
     try:
         st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
     except:
-        st.warning("⚠️ No se pudo cargar la imagen 'ej1.jpg'.")
+        st.warning("⚠️ No se encontró la imagen 'ej1.jpg' en el repositorio.")
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], 
@@ -58,7 +58,7 @@ if "Ejercicio 1" in ejercicio_seleccionado:
         "Z (m)": [0.0, 0.0, 0.0, 2.5],
         "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], 
         "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (KN)": [0.0, 0.0, 0.0, -200.0],
+        "Carga Fz (KN)": [0.0, 0.0, 0.0, -20.0],
         "Restringido_X": [True, True, True, False], 
         "Restringido_Y": [True, True, True, False],
         "Restringido_Z": [True, True, True, False]
@@ -74,10 +74,8 @@ if "Ejercicio 1" in ejercicio_seleccionado:
 
 elif "Ejercicio 2" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12.")
-    try:
-        st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", width=500)
-    except:
-        pass
+    try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", width=500)
+    except: pass
     
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 5.0, 5.0, 0.0], "Y (m)": [0.0, 0.0, 4.0, 4.0], "Z (m)": [0.0, 0.0, 0.0, 12.0],
@@ -91,10 +89,8 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 3:** Sistema estructural espacial terciario.")
-    try:
-        st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=500)
-    except:
-        pass
+    try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=500)
+    except: pass
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3], "X (m)": [0.0, 4.0, 2.0], "Y (m)": [0.0, 0.0, 3.0], "Z (m)": [0.0, 0.0, 6.0],
@@ -106,12 +102,10 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "Área (m2)": [0.002, 0.002, 0.002], "E (KN/m2)": [2e8, 2e8, 2e8]
     })
 
-else: # Ejercicio 4
+else:
     st.info("📌 **Enunciado Ejercicio 4:** Cuarto sistema estructural espacial.")
-    try:
-        st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
-    except:
-        pass
+    try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=500)
+    except: pass
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 6.0, 3.0, 3.0], "Y (m)": [0.0, 0.0, 5.0, 2.5], "Z (m)": [0.0, 0.0, 0.0, 9.0],
@@ -131,8 +125,8 @@ with col_barras:
     st.subheader("🔗 Conectividad de Barras (3D)")
     barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_seleccionado}", use_container_width=True)
 
-# --- VISTA 3D ---
-st.subheader("👁️ Gráfico Tridimensional de la Estructura")
+# --- VISTA PREVIA 3D ---
+st.subheader("👁️ Vista Previa 3D de la Estructura")
 fig = plt.figure(figsize=(10, 5))
 ax = fig.add_subplot(projection='3d')
 fig.patch.set_facecolor('#f0f2f6')
@@ -171,7 +165,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         for i, row in nodos_clean.iterrows():
             idx = nodo_idx[row["Nodo"]]
-            
             fx_col = "Carga Fx (KN)" if "Carga Fx (KN)" in nodos_clean.columns else "Carga Fx (ton)"
             fy_col = "Carga Fy (KN)" if "Carga Fy (KN)" in nodos_clean.columns else "Carga Fy (ton)"
             fz_col = "Carga Fz (KN)" if "Carga Fz (KN)" in nodos_clean.columns else "Carga Fz (ton)"
@@ -257,10 +250,12 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
         with tab4:
-            st.write("**Visualización Tridimensional de Esfuerzos**")
+            st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
             fig2 = plt.figure(figsize=(10, 6))
             ax2 = fig2.add_subplot(projection='3d')
             fig2.patch.set_facecolor('#f0f2f6')
+            
+            # Dibujar barras y etiquetas (T)/(C)
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -269,7 +264,21 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
                 etiqueta = f"{abs(N):.2f} (T)" if N > 0 else (f"{abs(N):.2f} (C)" if N < 0 else "0.00")
                 ax2.plot([n1["X (m)"], n2["X (m)"]], [n1["Y (m)"], n2["Y (m)"]], [n1["Z (m)"], n2["Z (m)"]], color=color, lw=4)
                 ax2.text(np.mean([n1["X (m)"], n2["X (m)"]]), np.mean([n1["Y (m)"], n2["Y (m)"]]), np.mean([n1["Z (m)"], n2["Z (m)"]]), etiqueta, color='black', fontsize=9, fontweight='bold')
+            
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], nodos_clean["Z (m)"], c='black', s=50)
+
+            # Dibujar etiquetas de Reacciones en los Apoyos 3D
+            for idx, row in nodos_clean.iterrows():
+                n_idx = nodo_idx[int(row["Nodo"])]
+                rx = R[3*n_idx]
+                ry = R[3*n_idx+1]
+                rz = R[3*n_idx+2]
+                x, y, z = row["X (m)"], row["Y (m)"], row["Z (m)"]
+                
+                if row["Restringido_X"] or row["Restringido_Y"] or row["Restringido_Z"]:
+                    texto_reac = f"N{int(row['Nodo'])} Reacc:\nRx:{rx:.2f}\nRy:{ry:.2f}\nRz:{rz:.2f}"
+                    ax2.text(x, y, z - 0.3, texto_reac, color='#8e44ad', fontsize=8, fontweight='bold', bbox=dict(facecolor='white', alpha=0.8, edgecolor='#8e44ad', boxstyle='round,pad=0.3'))
+
             blue_patch, red_patch, gray_patch = mpatches.Patch(color='#3498db', label='Tensión (+)'), mpatches.Patch(color='#e74c3c', label='Compresión (-)'), mpatches.Patch(color='#95a5a6', label='Nulo (0)')
             ax2.legend(handles=[blue_patch, red_patch, gray_patch], loc='upper right')
             ax2.set_xlabel('X (m)')
