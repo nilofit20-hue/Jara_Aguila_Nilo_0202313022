@@ -177,7 +177,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
         
         tab1, tab2, tab3, tab4 = st.tabs(["📉 Desplazamientos y Reacciones", "🧮 Matriz de Rigidez (K)", "🔗 Fuerzas Axiales", "🎨 Gráfico de Esfuerzos"])
         
-        # Pestaña 1: Decimales normales en Desplazamientos
         with tab1:
             res_col1, res_col2 = st.columns(2)
             with res_col1:
@@ -202,7 +201,8 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             st.write("**Matriz de Rigidez Global del Sistema (K)**")
             gdl_labels = [f"N{int(n)}-{e}" for n in nodos_clean["Nodo"] for e in ['X', 'Y']]
             K_df = pd.DataFrame(K, columns=gdl_labels, index=gdl_labels)
-            st.dataframe(K_df.style.format("{:.2e}"), use_container_width=True)
+            # Modificado para mostrar decimales normales
+            st.dataframe(K_df.style.format("{:.2f}"), use_container_width=True)
 
         with tab3:
             st.write("**Fuerzas Internas en los Elementos**")
@@ -215,14 +215,13 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             })
             st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
-        # Pestaña 4: Gráfico con (T), (C) y Flechas de Reacciones
         with tab4:
             st.write("**Estado de los Elementos y Reacciones**")
             fig2, ax2 = plt.subplots(figsize=(10, 5))
             fig2.patch.set_facecolor('#f0f2f6')
             ax2.set_facecolor('#ffffff')
             
-            # Dibujar barras y etiquetas (T)/(C)
+            # Dibujar barras y etiquetas (T)/(C) con "Tn"
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -232,13 +231,13 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
                 N = fuerzas_axiales[idx]
                 if N > 0: 
                     color = '#3498db'
-                    etiqueta = f"{abs(N):.2f} (T)"
+                    etiqueta = f"{abs(N):.2f} Tn (T)"
                 elif N < 0: 
                     color = '#e74c3c'
-                    etiqueta = f"{abs(N):.2f} (C)"
+                    etiqueta = f"{abs(N):.2f} Tn (C)"
                 else: 
                     color = '#95a5a6'
-                    etiqueta = "0.00"
+                    etiqueta = "0.00 Tn"
                     
                 ax2.plot(x_coords, y_coords, color=color, lw=4, zorder=1)
                 mid_x, mid_y = np.mean(x_coords), np.mean(y_coords)
@@ -258,14 +257,14 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
                 if abs(rx) > 0.001:
                     sentido = 1 if rx > 0 else -1
                     start_x = x - sentido * 0.8
-                    ax2.annotate(f"{abs(rx):.2f} t", xy=(x, y), xytext=(start_x, y),
+                    ax2.annotate(f"{abs(rx):.2f} Tn", xy=(x, y), xytext=(start_x, y),
                                  arrowprops=dict(facecolor='#8e44ad', edgecolor='#8e44ad', width=2, headwidth=8),
                                  fontsize=10, color='#8e44ad', fontweight='bold', ha='center', va='bottom', zorder=4)
                 
                 if abs(ry) > 0.001:
                     sentido = 1 if ry > 0 else -1
                     start_y = y - sentido * 0.8
-                    ax2.annotate(f"{abs(ry):.2f} t", xy=(x, y), xytext=(x, start_y),
+                    ax2.annotate(f"{abs(ry):.2f} Tn", xy=(x, y), xytext=(x, start_y),
                                  arrowprops=dict(facecolor='#8e44ad', edgecolor='#8e44ad', width=2, headwidth=8),
                                  fontsize=10, color='#8e44ad', fontweight='bold', ha='left', va='center', zorder=4)
             
@@ -276,7 +275,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             purple_patch = mpatches.Patch(color='#8e44ad', label='Reacciones')
             ax2.legend(handles=[blue_patch, red_patch, gray_patch, purple_patch], loc='upper right')
 
-            # Expandir un poco los límites de la gráfica para que quepan las flechas
+            # Expandir los límites de la gráfica para que quepan las flechas
             min_x, max_x = nodos_clean["X (m)"].min(), nodos_clean["X (m)"].max()
             min_y, max_y = nodos_clean["Y (m)"].min(), nodos_clean["Y (m)"].max()
             margen = max((max_x - min_x)*0.25, (max_y - min_y)*0.25, 1.0)
