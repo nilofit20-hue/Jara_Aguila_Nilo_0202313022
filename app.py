@@ -31,7 +31,7 @@ with st.sidebar:
     
     ejercicio_seleccionado = st.radio(
         "Ejercicios del Trabajo:",
-        ["Ejercicio 1 (Torre Piramidal Base Triangular)", "Ejercicio 2 (Torre Espacial de Clases)", "Ejercicio 3", "Ejercicio 4"]
+        ["Ejercicio 1 (Torre Piramidal Base Triangular)", "Ejercicio 2 (Torre Espacial de Clases)", "Ejercicio 3 (Armadura Espacial Múltiple)", "Ejercicio 4"]
     )
     
     st.markdown("---")
@@ -50,53 +50,53 @@ if "Ejercicio 1" in ejercicio_seleccionado:
 
     nodos_default = pd.DataFrame({
         "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
-        "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, -20.0],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0], "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0], "Carga Fz (ton)": [0.0, 0.0, 0.0, -20.0],
         "Restringido_X": [True, True, True, False], "Restringido_Y": [True, True, True, False], "Restringido_Z": [True, True, True, False]
     })
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3, 4, 5, 6], "Nodo_Inicial": [1, 2, 1, 2, 3, 1], "Nodo_Final": [4, 4, 2, 3, 4, 3],
-        "Área (m2)": [0.01]*6, "E (KN/m2)": [2e7]*6
+        "Área (m2)": [0.01]*6, "E (ton/m2)": [2e7]*6
     })
 
 elif "Ejercicio 2" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 2 (Clase):** Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN (en X) y 80 KN (en Y) en el nudo superior. $A = 0.001\text{ m}^2$, $E = 2.00 \times 10^8\text{ KN/m}^2$[cite: 14].")
-    try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Diapositivas de Clase)", width=600)
+    st.info("📌 **Enunciado Ejercicio 2 (Clase):** Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN[cite: 14].")
+    try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio.")
     
-    # Nodos según tus diapositivas de clase (Apoyos base 1, 2, 4, 5 y cúspide 3)
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3, 4, 5], 
-        "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], 
-        "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], 
-        "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
-        "Carga Fx (KN)": [0.0, 0.0, 60.0, 0.0, 0.0], 
-        "Carga Fy (KN)": [0.0, 0.0, -80.0, 0.0, 0.0], # Nota: En el gráfico 60KN es X y 80KN viene de la dirección Y
-        "Carga Fz (KN)": [0.0, 0.0, 0.0, 0.0, 0.0],
-        "Restringido_X": [True, True, False, True, True], 
-        "Restringido_Y": [True, True, False, True, True], 
-        "Restringido_Z": [True, True, False, True, True]
+        "Nodo": [1, 2, 3, 4, 5], "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
+        "Carga Fx (KN)": [0.0, 0.0, 60.0, 0.0, 0.0], "Carga Fy (KN)": [0.0, 0.0, -80.0, 0.0, 0.0], "Carga Fz (KN)": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "Restringido_X": [True, True, False, True, True], "Restringido_Y": [True, True, False, True, True], "Restringido_Z": [True, True, False, True, True]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3, 4], 
-        "Nodo_Inicial": [1, 2, 4, 5], 
-        "Nodo_Final": [3, 3, 3, 3],
-        "Área (m2)": [0.001, 0.001, 0.001, 0.001], 
-        "E (KN/m2)": [2e8, 2e8, 2e8, 2e8]
+        "Barra": [1, 2, 3, 4], "Nodo_Inicial": [1, 2, 4, 5], "Nodo_Final": [3, 3, 3, 3],
+        "Área (m2)": [0.001]*4, "E (KN/m2)": [2e8]*4
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Sistema estructural espacial terciario.")
-    try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=500)
-    except: pass
+    st.info("📌 **Enunciado Ejercicio 3:** Armadura espacial de varios niveles con apoyos en E, F, G. Carga vertical de 3.5 Ton en el nudo C. Considere $E = 2.1 \times 10^7\text{ Ton/m}^2$ y $A = 0.15\text{ m}^2$.")
+    try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
+    except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio.")
 
+    # Nodos aproximados basados en la geometría 3D del gráfico (E, F, G en base z=0; A, B en z=4; C, D en z=8)
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3], "X (m)": [0.0, 4.0, 2.0], "Y (m)": [0.0, 0.0, 3.0], "Z (m)": [0.0, 0.0, 6.0],
-        "Carga Fx (KN)": [0.0, 0.0, 15.0], "Carga Fy (KN)": [0.0, 0.0, -10.0], "Carga Fz (KN)": [0.0, 0.0, -50.0],
-        "Restringido_X": [True, True, False], "Restringido_Y": [True, True, False], "Restringido_Z": [True, True, False]
+        "Nodo": [1, 2, 3, 4, 5, 6, 7], # 1:E, 2:F, 3:G, 4:A, 5:B, 6:C, 7:D
+        "X (m)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Y (m)": [0.0, 3.0, 6.0, 0.0, 3.0, 0.0, 3.0],
+        "Z (m)": [0.0, 0.0, 0.0, 4.0, 4.0, 8.0, 8.0],
+        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (ton)": [0.0, 0.0, 0.0, 0.0, 0.0, -3.5, 0.0], # Carga de 3.5 Ton en C (Nodo 6)
+        "Restringido_X": [True, True, True, False, False, False, False],
+        "Restringido_Y": [True, True, True, False, False, False, False],
+        "Restringido_Z": [True, True, True, False, False, False, False]
     })
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 1], "Nodo_Final": [2, 3, 3],
-        "Área (m2)": [0.002]*3, "E (KN/m2)": [2e8]*3
+        "Barra": [1, 2, 3, 4, 5, 6, 7, 8], 
+        "Nodo_Inicial": [1, 1, 2, 2, 3, 4, 4, 5], 
+        "Nodo_Final": [4, 5, 4, 5, 5, 6, 7, 7],
+        "Área (m2)": [0.15]*8, 
+        "E (ton/m2)": [2.1e7]*8
     })
 
 else:
@@ -162,9 +162,9 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         for i, row in nodos_clean.iterrows():
             idx = nodo_idx[row["Nodo"]]
-            fx_col = "Carga Fx (KN)" if "Carga Fx (KN)" in nodos_clean.columns else "Carga Fx (ton)"
-            fy_col = "Carga Fy (KN)" if "Carga Fy (KN)" in nodos_clean.columns else "Carga Fy (ton)"
-            fz_col = "Carga Fz (KN)" if "Carga Fz (KN)" in nodos_clean.columns else "Carga Fz (ton)"
+            fx_col = [c for c in nodos_clean.columns if "Fx" in c][0]
+            fy_col = [c for c in nodos_clean.columns if "Fy" in c][0]
+            fz_col = [c for c in nodos_clean.columns if "Fz" in c][0]
             
             F[3*idx]     = float(row[fx_col]) if not pd.isna(row[fx_col]) else 0.0
             F[3*idx + 1] = float(row[fy_col]) if not pd.isna(row[fy_col]) else 0.0
@@ -185,7 +185,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             L = np.sqrt(dx**2 + dy**2 + dz**2)
             l, m, n_dir = dx/L, dy/L, dz/L
             
-            e_col = "E (KN/m2)" if "E (KN/m2)" in barras_clean.columns else "E (ton/m2)"
+            e_col = [c for c in barras_clean.columns if "E (" in c][0]
             EA_L = (barra["Área (m2)"] * barra[e_col]) / L
             v = np.array([l, m, n_dir])
             mat = np.outer(v, v)
