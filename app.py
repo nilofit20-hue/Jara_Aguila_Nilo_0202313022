@@ -35,18 +35,17 @@ with st.sidebar:
     )
     
     st.markdown("---")
-    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*[cite: 21]\nDesarrollado por: *Nilo Jara*[cite: 21]")
+    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*\nDesarrollado por: *Nilo Jara*")
 
 # --- TÍTULO PRINCIPAL ---
 st.title(f"🏗 SYNCRET: {ejercicio_seleccionado}")
-st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*[cite: 21]")
+st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*")
 st.markdown("---")
 
 # --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
 if "Ejercicio 1" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior D con carga vertical de 20 Ton.")
     
-    # Si subes una imagen llamada 'ej1.png' a tu repositorio de GitHub, aparecerá aquí:
     try:
         st.image("ej1.png", caption="Esquema Referencial - Ejercicio 1", width=500)
     except:
@@ -57,9 +56,9 @@ if "Ejercicio 1" in ejercicio_seleccionado:
         "X (m)": [0.0, 2.0, 1.0, 0.8], 
         "Y (m)": [0.0, 0.0, 1.6, 1.0],
         "Z (m)": [0.0, 0.0, 0.0, 2.5],
-        "Carga Fx (ton)": [0.0, 0.0, 0.0, 0.0], 
-        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0],
-        "Carga Fz (ton)": [0.0, 0.0, 0.0, -20.0],
+        "Carga Fx (KN)": [0.0, 0.0, 0.0, 0.0], 
+        "Carga Fy (KN)": [0.0, 0.0, 0.0, 0.0],
+        "Carga Fz (KN)": [0.0, 0.0, 0.0, -200.0], # Ajustado a unidades consistentes (o KN)
         "Restringido_X": [True, True, True, False], 
         "Restringido_Y": [True, True, True, False],
         "Restringido_Z": [True, True, True, False]
@@ -70,11 +69,11 @@ if "Ejercicio 1" in ejercicio_seleccionado:
         "Nodo_Inicial": [1, 2, 1, 2, 3, 1], 
         "Nodo_Final": [4, 4, 2, 3, 4, 3],
         "Área (m2)": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
-        "E (ton/m2)": [2e7, 2e7, 2e7, 2e7, 2e7, 2e7]
+        "E (KN/m2)": [2e7, 2e7, 2e7, 2e7, 2e7, 2e7]
     })
 
 elif "Ejercicio 2" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12[cite: 24].")
+    st.info("📌 **Enunciado Ejercicio 2:** Sistema estructural espacial secundario con perfil W10x12.")
     try:
         st.image("ej2.png", caption="Esquema Referencial - Ejercicio 2", width=500)
     except:
@@ -172,11 +171,10 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         for i, row in nodos_clean.iterrows():
             idx = nodo_idx[row["Nodo"]]
-            F[3*idx]     = float(row["Carga Fx (ton)"] if "ton" in nodos_df.columns or "ton" in str(nodos_df.columns)) if not pd.isna(row.get("Carga Fx (ton)", row.get("Carga Fx (KN)", 0))) else 0.0
-            # Usar claves seguras para unidades
-            fx_col = "Carga Fx (ton)" if "Carga Fx (ton)" in nodos_clean.columns else "Carga Fx (KN)"
-            fy_col = "Carga Fy (ton)" if "Carga Fy (ton)" in nodos_clean.columns else "Carga Fy (KN)"
-            fz_col = "Carga Fz (ton)" if "Carga Fz (ton)" in nodos_clean.columns else "Carga Fz (KN)"
+            
+            fx_col = "Carga Fx (KN)" if "Carga Fx (KN)" in nodos_clean.columns else "Carga Fx (ton)"
+            fy_col = "Carga Fy (KN)" if "Carga Fy (KN)" in nodos_clean.columns else "Carga Fy (ton)"
+            fz_col = "Carga Fz (KN)" if "Carga Fz (KN)" in nodos_clean.columns else "Carga Fz (ton)"
             
             F[3*idx]     = float(row[fx_col]) if not pd.isna(row[fx_col]) else 0.0
             F[3*idx + 1] = float(row[fy_col]) if not pd.isna(row[fy_col]) else 0.0
@@ -197,7 +195,7 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
             L = np.sqrt(dx**2 + dy**2 + dz**2)
             l, m, n_dir = dx/L, dy/L, dz/L
             
-            e_col = "E (ton/m2)" if "E (ton/m2)" in barras_clean.columns else "E (KN/m2)"
+            e_col = "E (KN/m2)" if "E (KN/m2)" in barras_clean.columns else "E (ton/m2)"
             EA_L = (barra["Área (m2)"] * barra[e_col]) / L
             v = np.array([l, m, n_dir])
             mat = np.outer(v, v)
@@ -237,7 +235,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D"):
         
         with tab1:
             res_col1, res_col2 = st.columns(2)
-            unit_label = "Unidades"
             with res_col1:
                 st.write("**Desplazamientos Nodales 3D (m)**")
                 desp_df = pd.DataFrame({"Nodo": nodos_clean["Nodo"].astype(int), "Dx": [f"{x:.6f}" for x in U[0::3]], "Dy": [f"{x:.6f}" for x in U[1::3]], "Dz": [f"{x:.6f}" for x in U[2::3]]})
