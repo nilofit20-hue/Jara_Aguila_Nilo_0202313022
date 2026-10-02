@@ -7,19 +7,11 @@ import matplotlib.patches as mpatches
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
 
-# --- DISEÑO VISUAL Y ESTILOS MODERNOS (TARJETAS ESTILO UI/UX) ---
+# --- DISEÑO VISUAL Y ESTILOS GENERALES ---
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(to bottom right, #090d16, #141b2d); }
     h1, h2, h3 { color: #f7fafc !important; text-align: center; font-family: sans-serif; }
-    
-    /* Contenedor general para alinear tarjetas */
-    .card-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -31,12 +23,11 @@ if "ejercicio_seleccionado" not in st.session_state:
     st.session_state.ejercicio_seleccionado = "Ejercicio 1"
 
 # ==========================================
-# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO ESTILIZADO)
+# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO CENTRADO Y SIMÉTRICO)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Encabezado con icono de título
     st.markdown("""
         <div style='text-align: center;'>
             <h1 style='font-size: 38px; font-weight: 700; margin-bottom: 5px;'>
@@ -45,76 +36,81 @@ if st.session_state.pagina_actual == "menu":
             <p style='color: #a0aec0; font-size: 20px; font-weight: 400; margin-top: 0;'>
                 Procedimiento para Armaduras en 3D
             </p>
-            <p style='color: #e2e8f0; font-size: 15px; margin-top: 15px;'>
+            <p style='color: #e2e8f0; font-size: 16px; margin-top: 15px; margin-bottom: 35px;'>
                 🎯 Selecciona el Sistema Estructural a Evaluar
             </p>
         </div>
-        <br>
     """, unsafe_allow_html=True)
 
-    # Inyección de estilos CSS avanzados para transformar los botones de Streamlit en Tarjetas UI profesionales
+    # Estilos CSS de precisión para transformar los botones en tarjetas anchas, rectangulares y de colores sólidos exactos
     st.markdown("""
     <style>
         div.stButton > button {
-            border-radius: 16px !important;
+            border-radius: 18px !important;
             font-weight: bold !important;
             font-size: 22px !important;
-            height: 140px !important;
+            height: 130px !important;
             width: 100% !important;
             color: white !important;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.15) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
             display: flex !important;
             align-items: center !important;
-            justify-content: flex-start !important;
-            padding-left: 35px !important;
+            justify-content: center !important;
+            text-align: center !important;
             letter-spacing: 1px;
         }
         div.stButton > button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.7);
             filter: brightness(1.15);
-            border-color: rgba(255,255,255,0.4) !important;
+            border-color: rgba(255,255,255,0.5) !important;
         }
-        
-        /* Colores y gradientes exactos por tarjeta */
-        div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; } /* Azul Ejercicio 1 */
-        div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; } /* Verde Ejercicio 2 */
-        div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; } /* Naranja/Ámbar Ejercicio 3 */
-        div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; } /* Morado Ejercicio 4 */
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2, gap="large")
+    # Columnas laterales para empujar el contenido exactamente al centro de la pantalla (Simetría total)
+    _, col_centro, _ = st.columns([1, 2.2, 1])
 
-    with col1:
-        if st.button("🔷  EJERCICIO 1"):
-            st.session_state.ejercicio_seleccionado = "Ejercicio 1"
-            st.session_state.pagina_actual = "detalle"
-            st.rerun()
-            
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+    with col_centro:
+        # Fila superior: Ejercicio 1 (Azul) y Ejercicio 2 (Verde)
+        sub_c1, sub_c2 = st.columns(2, gap="medium")
         
-        if st.button("🔶  EJERCICIO 3"):
-            st.session_state.ejercicio_seleccionado = "Ejercicio 3"
-            st.session_state.pagina_actual = "detalle"
-            st.rerun()
+        with sub_c1:
+            st.markdown("<style>div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; }</style>", unsafe_allow_html=True)
+            if st.button("🔷 EJERCICIO 1"):
+                st.session_state.ejercicio_seleccionado = "Ejercicio 1"
+                st.session_state.pagina_actual = "detalle"
+                st.rerun()
 
-    with col2:
-        if st.button("🟢  EJERCICIO 2"):
-            st.session_state.ejercicio_seleccionado = "Ejercicio 2"
-            st.session_state.pagina_actual = "detalle"
-            st.rerun()
-            
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+        with sub_c2:
+            st.markdown("<style>div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; }</style>", unsafe_allow_html=True)
+            if st.button("🟢 EJERCICIO 2"):
+                st.session_state.ejercicio_seleccionado = "Ejercicio 2"
+                st.session_state.pagina_actual = "detalle"
+                st.rerun()
 
-        if st.button("🟣  EJERCICIO 4"):
-            st.session_state.ejercicio_seleccionado = "Ejercicio 4"
-            st.session_state.pagina_actual = "detalle"
-            st.rerun()
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+        # Fila inferior: Ejercicio 3 (Naranja) y Ejercicio 4 (Morado)
+        sub_c3, sub_c4 = st.columns(2, gap="medium")
+
+        with sub_c3:
+            st.markdown("<style>div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; }</style>", unsafe_allow_html=True)
+            if st.button("🔶 EJERCICIO 3"):
+                st.session_state.ejercicio_seleccionado = "Ejercicio 3"
+                st.session_state.pagina_actual = "detalle"
+                st.rerun()
+
+        with sub_c4:
+            st.markdown("<style>div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }</style>", unsafe_allow_html=True)
+            if st.button("🟣 EJERCICIO 4"):
+                st.session_state.ejercicio_seleccionado = "Ejercicio 4"
+                st.session_state.pagina_actual = "detalle"
+                st.rerun()
+
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #718096; font-size: 14px;'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
 
 # ==========================================
@@ -130,7 +126,7 @@ else:
     st.title(f"🏗 SYNCRET: {ejercicio_activo}")
     st.markdown("---")
 
-    # Enunciado estilizado con letras grandes
+    # Enunciados estilizados con letras grandes
     if "Ejercicio 1" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #2563eb; margin-bottom: 25px;'>
