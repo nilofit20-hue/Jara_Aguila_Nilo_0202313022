@@ -7,47 +7,72 @@ import matplotlib.patches as mpatches
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
 
-# --- DISEÑO VISUAL Y ESTILOS ---
+# --- DISEÑO VISUAL Y ESTILOS MODERNOS ---
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(to bottom right, #0e1117, #1a202c); }
-    div.stButton > button:first-child {
-        background-color: #FF4B4B; color: white; font-size: 20px; font-weight: bold;
-        padding: 12px 24px; border-radius: 10px; border: none; width: 100%;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.3s ease;
-    }
-    div.stButton > button:first-child:hover {
-        background-color: #ff3333; transform: translateY(-2px);
-    }
-    h1, h2, h3 { color: #4B90FF !important; }
+    h1, h2, h3 { color: #4B90FF !important; text-align: center; }
+    
+    /* Contenedor principal de los botones de selección */
+    .stHorizontal { display: flex; justify-content: center; gap: 15px; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- PANEL LATERAL: SELECTOR DE LOS 4 EJERCICIOS ---
-with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3204/3204094.png", width=80)
-    st.header("📚 Panel de Ejercicios 3D")
-    st.info("Selecciona el sistema estructural solicitado por el docente:")
-    
-    ejercicio_seleccionado = st.radio(
-        "Ejercicios del Trabajo:",
-        [
-            "Ejercicio 1 (Torre Piramidal Base Triangular)", 
-            "Ejercicio 2 (Torre Espacial de Clases)", 
-            "Ejercicio 3 (Pirámide Central con 3 Apoyos)", 
-            "Ejercicio 4 (Torre Piramidal con 4 Apoyos)"
-        ]
-    )
-    
-    st.markdown("---")
-    st.markdown("**Universidad Nacional del Santa**\n*Curso: Análisis Estructural II*\nDesarrollado por: *Nilo Jara*")
-
-# --- TÍTULO PRINCIPAL ---
-st.title(f"🏗 SYNCRET: {ejercicio_seleccionado}")
-st.markdown("*Sistematización del Método de Rigidez - Armaduras Espaciales 3D*")
+# --- TÍTULO PRINCIPAL DE LA APLICACIÓN ---
+st.title("🏗️ Sistematización del método de Rigidez. Procedimiento para Armaduras en 3D")
+st.markdown("<p style='text-align: center; color: #a0aec0; font-size: 18px;'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Nilo Jara</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN ---
+# --- GESTIÓN DE ESTADO PARA EL EJERCICIO SELECCIONADO ---
+if "ejercicio_activo" not in st.session_state:
+    st.session_state.ejercicio_activo = "Ejercicio 1"
+
+# --- FILA DE 4 BOTONES INTERACTIVOS CON DIFERENTES COLORES Y ESQUINAS CURVEADAS ---
+st.markdown("### 📚 Selecciona el Sistema Estructural:")
+col_b1, col_b2, col_b3, col_b4 = st.columns(4)
+
+# Estilo personalizado inyectado para cada botón rectangular con esquinas redondeadas
+st.markdown("""
+<style>
+    div.row-widget.stButton > button {
+        border-radius: 20px !important;
+        font-weight: bold !important;
+        font-size: 16px !important;
+        padding: 12px 20px !important;
+        width: 100% !important;
+        color: white !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+    }
+    div.row-widget.stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+    /* Colores personalizados por botón */
+    div.stButton:nth-of-type(1) > button { background-color: #2b6cb0 !important; } /* Azul */
+    div.stButton:nth-of-type(2) > button { background-color: #276749 !important; } /* Verde */
+    div.stButton:nth-of-type(3) > button { background-color: #c05621 !important; } /* Naranja */
+    div.stButton:nth-of-type(4) > button { background-color: #553c9a !important; } /* Morado */
+</style>
+""", unsafe_allow_html=True)
+
+with col_b1:
+    if st.button("🔵 EJERCICIO 1"):
+        st.session_state.ejercicio_activo = "Ejercicio 1"
+with col_b2:
+    if st.button("🟢 EJERCICIO 2"):
+        st.session_state.ejercicio_activo = "Ejercicio 2"
+with col_b3:
+    if st.button("🟠 EJERCICIO 3"):
+        st.session_state.ejercicio_activo = "Ejercicio 3"
+with col_b4:
+    if st.button("🟣 EJERCICIO 4"):
+        st.session_state.ejercicio_activo = "Ejercicio 4"
+
+ejercicio_seleccionado = st.session_state.ejercicio_activo
+st.markdown("---")
+
+# --- CARGAR DATOS Y MOSTRAR ENUNCIADO E IMAGEN SEGÚN EL BOTÓN SELECCIONADO ---
 if "Ejercicio 1" in ejercicio_seleccionado:
     st.info("📌 **Enunciado Ejercicio 1:** Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.")
     try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=500)
@@ -79,7 +104,7 @@ elif "Ejercicio 2" in ejercicio_seleccionado:
     })
 
 elif "Ejercicio 3" in ejercicio_seleccionado:
-    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D[cite: 18].")
+    st.info("📌 **Enunciado Ejercicio 3:** Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.")
     try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
 
@@ -103,8 +128,8 @@ elif "Ejercicio 3" in ejercicio_seleccionado:
         "E (ton/m2)":   [2e7]*8
     })
 
-else: # Ejercicio 4 corregido con la conectividad completa de N4
-    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D[cite: 19].")
+else: # Ejercicio 4
+    st.info("📌 **Enunciado Ejercicio 4:** Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.")
     try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
     except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
@@ -123,7 +148,7 @@ else: # Ejercicio 4 corregido con la conectividad completa de N4
     barras_default = pd.DataFrame({
         "Barra": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
         "Nodo_Inicial": [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 5], 
-        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 6, 6, 6, 6, 6], # N4 (Nodo 4) conectado correctamente al perímetro y a la cúspide (N6)
+        "Nodo_Final":   [2, 3, 4, 1, 5, 5, 5, 5, 6, 6, 6, 6, 6],
         "Área (m2)":    [0.01]*13, 
         "E (ton/m2)":   [2e7]*13
     })
