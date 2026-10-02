@@ -48,17 +48,24 @@ col_nodos, col_barras = st.columns(2)
 with col_nodos:
     st.subheader("📍 1. Coordenadas y Cargas")
     nodos_default = pd.DataFrame({
-        "Nodo": [1, 2, 3], "X (m)": [0.0, 4.0, 2.0], "Y (m)": [0.0, 0.0, 3.0],
-        "Carga Fx (ton)": [0.0, 0.0, 5.0], "Carga Fy (ton)": [0.0, 0.0, -10.0],
-        "Restringido_X": [True, False, False], "Restringido_Y": [True, True, False]
+        "Nodo": [1, 2, 3, 4], 
+        "X (m)": [0.0, 4.0, 0.0, 4.0], 
+        "Y (m)": [0.0, 0.0, 3.0, 3.0],
+        "Carga Fx (ton)": [0.0, 0.0, 2.0, 0.0], 
+        "Carga Fy (ton)": [0.0, 0.0, 0.0, 0.0],
+        "Restringido_X": [True, False, False, False], 
+        "Restringido_Y": [True, True, False, False]
     })
     nodos_df = st.data_editor(nodos_default, num_rows="dynamic", key="nodos", use_container_width=True)
 
 with col_barras:
     st.subheader("🔗 2. Conectividad de Barras")
     barras_default = pd.DataFrame({
-        "Barra": [1, 2, 3], "Nodo_Inicial": [1, 2, 1], "Nodo_Final": [2, 3, 3],
-        "Área (m2)": [0.01, 0.01, 0.01], "E (ton/m2)": [2e7, 2e7, 2e7]
+        "Barra": [1, 2, 3, 4, 5, 6], 
+        "Nodo_Inicial": [1, 2, 3, 1, 1, 2], 
+        "Nodo_Final": [2, 4, 4, 3, 4, 3],
+        "Área (m2)": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
+        "E (ton/m2)": [2e7, 2e7, 2e7, 2e7, 2e7, 2e7]
     })
     barras_df = st.data_editor(barras_default, num_rows="dynamic", key="barras", use_container_width=True)
 
@@ -91,7 +98,6 @@ st.markdown("---")
 # --- 3. MOTOR MATRICIAL ---
 if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
     try:
-        # Limpieza de datos
         nodos_clean = nodos_df.dropna(subset=["Nodo", "X (m)", "Y (m)"])
         barras_clean = barras_df.dropna(subset=["Nodo_Inicial", "Nodo_Final"])
         
@@ -111,7 +117,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             
         gdl_libres = [i for i in range(n_gdl) if i not in gdl_restringidos]
         
-        # Ensamblaje Matriz K
         K = np.zeros((n_gdl, n_gdl))
         for _, barra in barras_clean.iterrows():
             idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
@@ -135,7 +140,6 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
                 for j in range(4):
                     K[gdl[i], gdl[j]] += k_local[i, j]
                     
-        # Solución del sistema
         K_libres = K[np.ix_(gdl_libres, gdl_libres)]
         F_libres = F[gdl_libres]
         U_libres = np.linalg.solve(K_libres, F_libres)
@@ -144,14 +148,12 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
         U[gdl_libres] = U_libres
         R = np.dot(K, U)
         
-        # Cálculo de Fuerzas Axiales
         fuerzas_axiales = []
         estados = []
         for _, barra in barras_clean.iterrows():
             idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
             idx2 = nodo_idx[int(barra["Nodo_Final"])]
             n1, n2 = nodos_clean.iloc[idx1], nodos_clean.iloc[idx2]
-            
             dx = n2["X (m)"] - n1["X (m)"]
             dy = n2["Y (m)"] - n1["Y (m)"]
             L = np.sqrt(dx**2 + dy**2)
@@ -160,31 +162,30 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             u1, u2 = U[2*idx1], U[2*idx1+1]
             u3, u4 = U[2*idx2], U[2*idx2+1]
             
-            # Deformación de la barra
             dL = c*(u3 - u1) + s*(u4 - u2)
             N = (barra["Área (m2)"] * barra["E (ton/m2)"] / L) * dL
-            N = np.round(N, 4) # Redondeo para filtrar ceros absolutos
+            N = np.round(N, 4) 
             
             fuerzas_axiales.append(N)
             if N > 0: estados.append("Tracción")
             elif N < 0: estados.append("Compresión")
             else: estados.append("Nulo")
 
-        # --- MOSTRAR RESULTADOS (PESTAÑAS) ---
+        # --- MOSTRAR RESULTADOS ---
         st.balloons()
         st.success("✅ ¡Sistema resuelto con éxito! Explora los resultados en las pestañas inferiores.")
         
         tab1, tab2, tab3, tab4 = st.tabs(["📉 Desplazamientos y Reacciones", "🧮 Matriz de Rigidez (K)", "🔗 Fuerzas Axiales", "🎨 Gráfico de Esfuerzos"])
         
-        # Pestaña 1: Desplazamientos y Reacciones
+        # Pestaña 1: Decimales normales en Desplazamientos
         with tab1:
             res_col1, res_col2 = st.columns(2)
             with res_col1:
                 st.write("**Desplazamientos Nodales (m)**")
                 desp_df = pd.DataFrame({
                     "Nodo": nodos_clean["Nodo"].astype(int),
-                    "Dx": [f"{x:.3e}" for x in U[0::2]],
-                    "Dy": [f"{x:.3e}" for x in U[1::2]]
+                    "Dx": [f"{x:.6f}" for x in U[0::2]],
+                    "Dy": [f"{x:.6f}" for x in U[1::2]]
                 })
                 st.dataframe(desp_df, hide_index=True, use_container_width=True)
             with res_col2:
@@ -197,14 +198,12 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
                 reac_df = reac_df[(nodos_clean["Restringido_X"].values) | (nodos_clean["Restringido_Y"].values)]
                 st.dataframe(reac_df, hide_index=True, use_container_width=True)
 
-        # Pestaña 2: Matriz K Global
         with tab2:
             st.write("**Matriz de Rigidez Global del Sistema (K)**")
             gdl_labels = [f"N{int(n)}-{e}" for n in nodos_clean["Nodo"] for e in ['X', 'Y']]
             K_df = pd.DataFrame(K, columns=gdl_labels, index=gdl_labels)
             st.dataframe(K_df.style.format("{:.2e}"), use_container_width=True)
 
-        # Pestaña 3: Fuerzas Axiales
         with tab3:
             st.write("**Fuerzas Internas en los Elementos**")
             fuerzas_df = pd.DataFrame({
@@ -216,13 +215,14 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
             })
             st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
-        # Pestaña 4: Gráfico de Esfuerzos (Tracción/Compresión)
+        # Pestaña 4: Gráfico con (T), (C) y Flechas de Reacciones
         with tab4:
-            st.write("**Estado de los Elementos (Visualización Gráfica)**")
+            st.write("**Estado de los Elementos y Reacciones**")
             fig2, ax2 = plt.subplots(figsize=(10, 5))
             fig2.patch.set_facecolor('#f0f2f6')
             ax2.set_facecolor('#ffffff')
             
+            # Dibujar barras y etiquetas (T)/(C)
             for idx, barra in barras_clean.iterrows():
                 n1 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
                 n2 = nodos_clean[nodos_clean["Nodo"] == barra["Nodo_Final"]].iloc[0]
@@ -230,26 +230,59 @@ if st.button("🚀 INICIAR CÁLCULO MATRICIAL"):
                 y_coords = [n1["Y (m)"], n2["Y (m)"]]
                 
                 N = fuerzas_axiales[idx]
-                if N > 0: color = '#3498db' # Azul = Tracción
-                elif N < 0: color = '#e74c3c' # Rojo = Compresión
-                else: color = '#95a5a6' # Gris = Nulo
+                if N > 0: 
+                    color = '#3498db'
+                    etiqueta = f"{abs(N):.2f} (T)"
+                elif N < 0: 
+                    color = '#e74c3c'
+                    etiqueta = f"{abs(N):.2f} (C)"
+                else: 
+                    color = '#95a5a6'
+                    etiqueta = "0.00"
                     
                 ax2.plot(x_coords, y_coords, color=color, lw=4, zorder=1)
-                
-                # Etiqueta de la fuerza en la barra
                 mid_x, mid_y = np.mean(x_coords), np.mean(y_coords)
-                ax2.text(mid_x, mid_y, f"{abs(N):.2f} T", color='black', fontsize=10, 
+                ax2.text(mid_x, mid_y, etiqueta, color='black', fontsize=10, 
                          ha='center', va='center', bbox=dict(facecolor='white', alpha=0.8, edgecolor='none', pad=2))
 
             # Dibujar nodos encima
             ax2.scatter(nodos_clean["X (m)"], nodos_clean["Y (m)"], c='black', s=50, zorder=2)
+
+            # Dibujar flechas de Reacciones (Morado)
+            for idx, row in nodos_clean.iterrows():
+                n_idx = nodo_idx[int(row["Nodo"])]
+                rx = R[2*n_idx]
+                ry = R[2*n_idx+1]
+                x, y = row["X (m)"], row["Y (m)"]
+                
+                if abs(rx) > 0.001:
+                    sentido = 1 if rx > 0 else -1
+                    start_x = x - sentido * 0.8
+                    ax2.annotate(f"{abs(rx):.2f} t", xy=(x, y), xytext=(start_x, y),
+                                 arrowprops=dict(facecolor='#8e44ad', edgecolor='#8e44ad', width=2, headwidth=8),
+                                 fontsize=10, color='#8e44ad', fontweight='bold', ha='center', va='bottom', zorder=4)
+                
+                if abs(ry) > 0.001:
+                    sentido = 1 if ry > 0 else -1
+                    start_y = y - sentido * 0.8
+                    ax2.annotate(f"{abs(ry):.2f} t", xy=(x, y), xytext=(x, start_y),
+                                 arrowprops=dict(facecolor='#8e44ad', edgecolor='#8e44ad', width=2, headwidth=8),
+                                 fontsize=10, color='#8e44ad', fontweight='bold', ha='left', va='center', zorder=4)
             
-            # Leyenda personalizada
+            # Leyenda actualizada
             blue_patch = mpatches.Patch(color='#3498db', label='Tracción (+)')
             red_patch = mpatches.Patch(color='#e74c3c', label='Compresión (-)')
             gray_patch = mpatches.Patch(color='#95a5a6', label='Nulo (0)')
-            ax2.legend(handles=[blue_patch, red_patch, gray_patch], loc='upper right')
+            purple_patch = mpatches.Patch(color='#8e44ad', label='Reacciones')
+            ax2.legend(handles=[blue_patch, red_patch, gray_patch, purple_patch], loc='upper right')
 
+            # Expandir un poco los límites de la gráfica para que quepan las flechas
+            min_x, max_x = nodos_clean["X (m)"].min(), nodos_clean["X (m)"].max()
+            min_y, max_y = nodos_clean["Y (m)"].min(), nodos_clean["Y (m)"].max()
+            margen = max((max_x - min_x)*0.25, (max_y - min_y)*0.25, 1.0)
+            ax2.set_xlim(min_x - margen, max_x + margen)
+            ax2.set_ylim(min_y - margen, max_y + margen)
+            
             ax2.set_aspect('equal')
             ax2.grid(True, linestyle='--', alpha=0.5)
             st.pyplot(fig2)
