@@ -187,7 +187,7 @@ else:
         </div>
         """, unsafe_allow_html=True)
         try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", width=600)
-        except: st.warning("⚠️️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
+        except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
         
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5], "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
@@ -271,7 +271,7 @@ else:
         st.subheader("🔗 Conectividad de Barras (3D)")
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
-    # --- VISTA PREVIA 3D ---
+    # --- VISTA PREVIA 3D (con labelpad y márgenes para evitar solapamiento) ---
     st.subheader("👁️ Vista Previa 3D de la Estructura")
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
@@ -290,9 +290,10 @@ else:
             ax.text(nodo["X (m)"], nodo["Y (m)"], nodo["Z (m)"], f" N{int(nodo['Nodo'])}", fontsize=10, fontweight='bold')
     except: pass
 
-    ax.set_xlabel('X (m)')
-    ax.set_ylabel('Y (m)')
-    ax.set_zlabel('Z (m)')
+    ax.set_xlabel('X (m)', labelpad=12)
+    ax.set_ylabel('Y (m)', labelpad=12)
+    ax.set_zlabel('Z (m)', labelpad=12)
+    ax.margins(0.1)
     st.pyplot(fig)
     st.markdown("---")
 
@@ -428,13 +429,15 @@ else:
                     
                     if row["Restringido_X"] or row["Restringido_Y"] or row["Restringido_Z"]:
                         texto_reac = f"N{int(row['Nodo'])} Reacc:\nRx:{rx:.2f}\nRy:{ry:.2f}\nRz:{rz:.2f}"
-                        ax2.text(x, y, z - 0.3, texto_reac, color='#8e44ad', fontsize=8, fontweight='bold', bbox=dict(facecolor='white', alpha=0.8, edgecolor='#8e44ad', boxstyle='round,pad=0.3'))
+                        # Ajustado z - 0.5 para que la etiqueta no tape los nodos
+                        ax2.text(x, y, z - 0.5, texto_reac, color='#8e44ad', fontsize=8, fontweight='bold', bbox=dict(facecolor='white', alpha=0.9, edgecolor='#8e44ad', boxstyle='round,pad=0.3'))
 
                 blue_patch, red_patch, gray_patch = mpatches.Patch(color='#3498db', label='Tensión (+)'), mpatches.Patch(color='#e74c3c', label='Compresión (-)'), mpatches.Patch(color='#95a5a6', label='Nulo (0)')
                 ax2.legend(handles=[blue_patch, red_patch, gray_patch], loc='upper right')
-                ax2.set_xlabel('X (m)')
-                ax2.set_ylabel('Y (m)')
-                ax2.set_zlabel('Z (m)')
+                
+                ax2.set_xlabel('X (m)', labelpad=12)
+                ax2.set_ylabel('Y (m)', labelpad=12)
+                ax2.set_zlabel('Z (m)', labelpad=12)
                 st.pyplot(fig2)
 
         except Exception as e:
