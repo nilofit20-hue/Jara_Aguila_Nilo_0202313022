@@ -5,26 +5,24 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import streamlit.components.v1 as components
 
-# Configuración inicial
-st.set_page_config(page_title="TAREA - JARA AGUILA NILO", page_icon="🏗️", layout="wide")
+# Configuración inicial con el nombre y código del estudiante para compartir
+st.set_page_config(page_title="JARA AGUILA NILO 0202313022", page_icon="🏗️", layout="wide")
 
 # --- INYECCIÓN DE METADATOS PARA WHATSAPP Y REDES SOCIALES ---
 st.markdown("""
     <head>
-        <meta property="og:title" content="TAREA - JARA AGUILA NILO">
+        <meta property="og:title" content="JARA AGUILA NILO 0202313022">
         <meta property="og:description" content="Sistematización del método de Rigidez - Análisis Estructural II • UNS">
         <meta property="og:type" content="website">
     </head>
 """, unsafe_allow_html=True)
 
-# --- SCRIPT GLOBAL PARA LIMPIAR LA URL DE HASHES FEOS ---
+# --- SCRIPT GLOBAL PARA LIMPIAR LA URL DE HASHES ---
 components.html("""
     <script>
-        // Limpiar cualquier hash (#...) de la URL de forma inmediata y continua
         if (window.location.hash) {
             history.pushState("", document.title, window.location.pathname + window.location.search);
         }
-        // Vigilar cambios por si acaso
         window.onhashchange = function () {
             if (window.location.hash) {
                 history.pushState("", document.title, window.location.pathname + window.location.search);
@@ -51,7 +49,7 @@ st.markdown("""
         border-radius: 18px !important;
         font-weight: bold !important;
         font-size: 22px !important;
-        height: 95px !important;
+        height: 90px !important;
         width: 100% !important;
         color: white !important;
         box-shadow: 0 8px 20px rgba(0,0,0,0.6);
@@ -71,22 +69,22 @@ st.markdown("""
         cursor: pointer;
     }
 
-    /* Colores personalizados para cada botón de ejercicio */
+    /* Colores personalizados para cada botón de opción */
     div.stButton:nth-of-type(1) > button {
         background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
     }
     div.stButton:nth-of-type(2) > button {
         background: linear-gradient(135deg, #047857, #10b981) !important;
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
     }
     div.stButton:nth-of-type(3) > button {
         background: linear-gradient(135deg, #b45309, #f59e0b) !important;
-        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
     }
     div.stButton:nth-of-type(4) > button {
         background: linear-gradient(135deg, #6d28d9, #8b5cf6) !important;
-        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+    }
+    div.stButton:nth-of-type(5) > button {
+        background: linear-gradient(135deg, #be185d, #ec4899) !important;
+        box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
     }
 
     /* --- ESTILO PARA EL BOTÓN DE CÁLCULO CENTRADO Y GRANDE --- */
@@ -144,11 +142,11 @@ if "ejercicio_seleccionado" not in st.session_state:
 if st.session_state.pagina_actual == "menu":
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Tarjeta superior con el autor destacado
+    # Tarjeta superior con el autor y código destacado
     st.markdown("""
         <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 12px 25px; border-radius: 35px; max-width: 650px; margin: 0 auto 25px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
             <p style='color: #ffffff; font-size: 16px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
-                👨‍💻 Creado y Desarrollado por: <span style='color: #93c5fd; font-weight: 800;'>Jara Aguila Nilo</span> • UNS
+                👨‍💻 Autor: <span style='color: #93c5fd; font-weight: 800;'>Jara Aguila Nilo (0202313022)</span> • UNS
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -162,7 +160,7 @@ if st.session_state.pagina_actual == "menu":
                 Procedimiento para Armaduras en 3D
             </p>
             <p style='color: #ffffff; font-size: 17px; margin-top: 15px; margin-bottom: 30px; font-weight: 600;'>
-                🎯 Selecciona el Sistema Estructural a Evaluar
+                🎯 Selecciona una Opción o Ejercicio a Evaluar
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -175,29 +173,79 @@ if st.session_state.pagina_actual == "menu":
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟢 EJERCICIO 2", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 2"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
         if st.button("🔶 EJERCICIO 3", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 3"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟣 EJERCICIO 4", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 4"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+        if st.button("📋 CONCLUSIONES DEL TRABAJO", use_container_width=True):
+            st.session_state.pagina_actual = "conclusiones"
+            st.rerun()
+
     st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Jara Aguila Nilo</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Jara Aguila Nilo (0202313022)</p>", unsafe_allow_html=True)
+
+# ==========================================
+# 📋 PANTALLA DE CONCLUSIONES DEL TRABAJO
+# ==========================================
+elif st.session_state.pagina_actual == "conclusiones":
+    col_b1, col_b2, col_b3 = st.columns([1, 2, 1])
+    with col_b2:
+        st.markdown('<div class="centered-back-btn">', unsafe_allow_html=True)
+        if st.button("🔙 Volver al Menú Principal", use_container_width=True):
+            st.session_state.pagina_actual = "menu"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.markdown("<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>📋 Conclusiones del Trabajo de Investigación</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #93c5fd; font-size: 16px;'>Sistematización del Método de Rigidez en Armaduras Espaciales 3D • UNS</p>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    st.markdown("""
+    <div style='background-color: rgba(30, 41, 59, 0.9); padding: 30px; border-radius: 18px; border: 1.5px solid rgba(59, 130, 246, 0.4); box-shadow: 0 8px 25px rgba(0,0,0,0.5);'>
+        <ol style='color: #e2e8f0; font-size: 18px; line-height: 1.8; margin: 0; padding-left: 20px;'>
+            <li style='margin-bottom: 18px;'>
+                <b>Automatización del Método Matricial:</b> La aplicación del método de rigidez permite sistematizar el cálculo estructural de sistemas espaciales tridimensionales complejos, transformando operaciones algebraicas tediosas en un proceso algorítmico eficiente y preciso.
+            </li>
+            <li style='margin-bottom: 18px;'>
+                <b>Importancia de la Geometría y Orientación:</b> El cálculo riguroso de los cosenos directores ($l, m, n$) y las longitudes reales ($L$) a partir de las coordenadas nodales es indispensable para realizar una correcta transformación entre el sistema de coordenadas local y global de cada barra.
+            </li>
+            <li style='margin-bottom: 18px;'>
+                <b>Partición Estática Eficiente:</b> La estructuración y partición de la matriz global de rigidez en bloques ($\mathbf{K}_{LL}, \mathbf{K}_{LR}, \mathbf{K}_{RL}, \mathbf{K}_{RR}$) simplifica la resolución matemática del sistema, aislando los grados de libertad libres para determinar los desplazamientos nodales mediante inversión matricial.
+            </li>
+            <li style='margin-bottom: 18px;'>
+                <b>Validación mediante Equilibrio Estático:</b> La comprobación global de la sumatoria de fuerzas externas frente a las reacciones obtenidas en los apoyos confirmó que los modelos desarrollados satisfacen estrictamente el principio de equilibrio estático ($\sum F = 0$).
+            </li>
+            <li style='margin-bottom: 18px;'>
+                <b>Identificación de Elementos Críticos:</b> A través del análisis de las fuerzas internas axiales, se logró clasificar de manera automática el estado mecánico de cada barra (tracción o compresión), facilitando la evaluación del comportamiento estructural ante cargas aplicadas.
+            </li>
+            <li style='margin-bottom: 0px;'>
+                <b>Aporte Académico y Tecnológico:</b> El desarrollo del aplicativo interactivo <b>SYNCRET</b> demuestra la viabilidad de integrar conceptos teóricos avanzados de Análisis Estructural II con herramientas de programación modernas, optimizando la comprobación de resultados en proyectos de ingeniería civil.
+            </li>
+        </ol>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
 # ==========================================
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
