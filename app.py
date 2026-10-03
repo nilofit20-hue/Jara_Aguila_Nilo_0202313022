@@ -205,7 +205,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -331,10 +331,8 @@ else:
             n1 = nodos_df[nodos_df["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
             n2 = nodos_df[nodos_df["Nodo"] == barra["Nodo_Final"]].iloc[0]
             
-            # Dibujar la línea de la barra
             ax.plot([n1["X (m)"], n2["X (m)"]], [n1["Y (m)"], n2["Y (m)"]], [n1["Z (m)"], n2["Z (m)"]], color='#2c3e50', lw=2)
             
-            # Etiquetar el número de la barra en el punto medio (estilo croquis)
             mx = (n1["X (m)"] + n2["X (m)"]) / 2
             my = (n1["Y (m)"] + n2["Y (m)"]) / 2
             mz = (n1["Z (m)"] + n2["Z (m)"]) / 2
@@ -407,7 +405,6 @@ else:
                 mat = np.outer(v, v)
                 k_local = EA_L * np.block([[mat, -mat], [-mat, mat]])
                 
-                # Almacenar matriz local de cada barra
                 matrices_locales[int(barra["Barra"])] = k_local
                 
                 gdl = [3*idx1, 3*idx1+1, 3*idx1+2, 3*idx2, 3*idx2+1, 3*idx2+2]
@@ -459,14 +456,14 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # Pestañas de resultados ampliadas con Matrices Locales
+            # Pestañas de resultados (Incluyendo la nueva pestaña de Desglose por Elemento)
             tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
                 "📉 Desplazamientos y Reacciones", 
                 "🧮 Matriz de Rigidez (K)", 
                 "🔗 Fuerzas Axiales", 
                 "📋 Partición de GDL", 
                 "📐 Geometría y Barras", 
-                "🧮 Matrices Locales (k)",
+                "📑 Desglose por Elemento",
                 "🎨 Gráfico 3D de Esfuerzos"
             ])
             
@@ -515,11 +512,46 @@ else:
                 st.dataframe(geom_df, hide_index=True, use_container_width=True)
 
             with tab6:
-                st.write("**🧮 Matriz de Rigidez Local (k) de cada Barra (6x6)**")
-                local_labels = ["u1", "v1", "w1", "u2", "v2", "w2"]
-                for b_id, k_mat in matrices_locales.items():
-                    st.markdown(f"**Barra [{b_id}]**")
-                    k_df = pd.DataFrame(k_mat, columns=local_labels, index=local_labels)
+                st.write("**📑 Memoria de Cálculo Detallada por Elemento (Ángulos, Cosenos y Matriz Local)**")
+                for _, barra in barras_clean.iterrows():
+                    b_id = int(barra["Barra"])
+                    n_ini = int(barra["Nodo_Inicial"])
+                    n_fin = int(barra["Nodo_Final"])
+                    
+                    st.markdown(f"### 🔹 Elemento {b_id} (Nodos {n_ini} $\\to$ {n_fin})")
+                    
+                    n1 = nodos_clean[nodos_clean["Nodo"] == n_ini].iloc[0]
+                    n2 = nodos_clean[nodos_clean["Nodo"] == n_fin].iloc[0]
+                    dx = n2["X (m)"] - n1["X (m)"]
+                    dy = n2["Y (m)"] - n1["Y (m)"]
+                    dz = n2["Z (m)"] - n1["Z (m)"]
+                    L = np.sqrt(dx**2 + dy**2 + dz**2)
+                    l, m, n_dir = dx/L, dy/L, dz/L
+                    
+                    ang_x = np.degrees(np.arccos(np.clip(l, -1.0, 1.0)))
+                    ang_y = np.degrees(np.arccos(np.clip(m, -1.0, 1.0)))
+                    ang_z = np.degrees(np.arccos(np.clip(n_dir, -1.0, 1.0)))
+                    
+                    col_e1, col_e2 = st.columns(2)
+                    with col_e1:
+                        st.markdown(f"""
+                        * **Longitud ($L$):** {L:.4f} m
+                        * **Cosenos y Ángulos Directores:**
+                          * $l = {l:.4f}$ ($\\alpha = {ang_x:.2f}^\\circ$)
+                          * $m = {m:.4f}$ ($\\beta = {ang_y:.2f}^\\circ$)
+                          * $n = {n_dir:.4f}$ ($\\gamma = {ang_z:.2f}^\\circ$)
+                        """)
+                    with col_e2:
+                        e_col = [c for c in barras_clean.columns if "E (" in c][0]
+                        ea_l = (barra["Área (m2)"] * barra[e_col]) / L
+                        st.markdown(f"""
+                        * **Área ($A$):** {barra['Área (m2)']} m²
+                        * **Rigidez Axial ($EA/L$):** {ea_l:.2f}
+                        """)
+                    
+                    st.write(f"**Matriz de Rigidez Local ($k$) - Elemento {b_id}:**")
+                    local_labels = [f"u{n_ini}", f"v{n_ini}", f"w{n_ini}", f"u{n_fin}", f"v{n_fin}", f"w{n_fin}"]
+                    k_df = pd.DataFrame(matrices_locales[b_id], columns=local_labels, index=local_labels)
                     st.dataframe(k_df.style.format("{:.2f}"), use_container_width=True)
                     st.markdown("---")
 
@@ -561,3 +593,4 @@ else:
 
         except Exception as e:
             st.error(f"❌ Error en el cálculo matricial. Verifica la geometría y los datos. Detalle: {e}")
+            
