@@ -24,14 +24,14 @@ st.markdown("""
     
     /* Estilos para hacer las pestañas (Tabs) más grandes, visibles y estéticas */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 6px;
     }
     .stTabs [data-baseweb="tab"] {
         height: 52px;
         background-color: rgba(30, 41, 59, 0.85);
         border-radius: 12px 12px 0px 0px;
-        padding: 0 14px;
-        font-size: 15px !important;
+        padding: 0 12px;
+        font-size: 14px !important;
         font-weight: 700 !important;
         color: #cbd5e1 !important;
         border: 1px solid rgba(255, 255, 255, 0.15);
@@ -484,14 +484,14 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # --- PESTAÑAS ORDENADAS INCLUYENDO EL DESGLOSE DETALLADO POR ELEMENTO ---
+            # --- PESTAÑAS ORDENADAS EN FLUJO LÓGICO PROFESIONAL ---
             tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
                 "📐 Geometría y Barras", 
                 "📋 Partición de GDL", 
                 "🧮 Matrices Locales (k)",
-                "🌐 Matrices Globales por Elemento (Ke)",
+                "🌐 Matrices Globales (Ke)",
                 "📑 Desglose por Elemento",
-                "🧮 Matriz Global del Sistema (K)", 
+                "🧮 Matriz Global Particionada (K)", 
                 "📉 Desplazamientos y Reacciones", 
                 "🔗 Fuerzas Axiales", 
                 "⚖️ Equilibrio Estático",
@@ -584,10 +584,40 @@ else:
                     st.markdown("---")
 
             with tab6:
-                st.write("**🧮 Matriz de Rigidez Global del Sistema 3D (K)**")
-                gdl_labels = [f"N{int(n)}-{e}" for n in nodos_clean["Nodo"] for e in ['X', 'Y', 'Z']]
-                K_df = pd.DataFrame(K, columns=gdl_labels, index=gdl_labels)
-                st.dataframe(K_df.style.format("{:.2f}"), use_container_width=True)
+                st.write("**🧮 Matriz Global del Sistema Particionada ($K_{LL}, K_{LR}, K_{RL}, K_{RR}$)**")
+                st.markdown("""
+                <div style='display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px;'>
+                    <span style='background: rgba(37, 99, 235, 0.3); border: 1px solid #3b82f6; padding: 4px 10px; border-radius: 6px;'>🟦 <b>K_LL</b> (Libres - Libres)</span>
+                    <span style='background: rgba(217, 119, 6, 0.3); border: 1px solid #f59e0b; padding: 4px 10px; border-radius: 6px;'>🟧 <b>K_LR / K_RL</b> (Acoplamiento)</span>
+                    <span style='background: rgba(109, 40, 217, 0.3); border: 1px solid #8b5cf6; padding: 4px 10px; border-radius: 6px;'>🟪 <b>K_RR</b> (Restringidos - Restringidos)</span>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                gdl_ordenados = gdl_libres + gdl_restringidos
+                K_ordenada = K[np.ix_(gdl_ordenados, gdl_ordenados)]
+                n_free = len(gdl_libres)
+                
+                gdl_labels_ordenados = [
+                    f"GDL {i} (L)" if i in gdl_libres else f"GDL {i} (R)"
+                    for i in gdl_ordenados
+                ]
+                K_ord_df = pd.DataFrame(K_ordenada, columns=gdl_labels_ordenados, index=gdl_labels_ordenados)
+                
+                def style_partitions(x):
+                    df_styles = pd.DataFrame('', index=x.index, columns=x.columns)
+                    for r in range(len(x)):
+                        for c in range(len(x.columns)):
+                            if r < n_free and c < n_free:
+                                df_styles.iloc[r, c] = 'background-color: rgba(37, 99, 235, 0.22); color: #93c5fd; font-weight: bold;'
+                            elif r < n_free and c >= n_free:
+                                df_styles.iloc[r, c] = 'background-color: rgba(217, 119, 6, 0.22); color: #fde68a;'
+                            elif r >= n_free and c < n_free:
+                                df_styles.iloc[r, c] = 'background-color: rgba(217, 119, 6, 0.22); color: #fde68a;'
+                            else:
+                                df_styles.iloc[r, c] = 'background-color: rgba(109, 40, 217, 0.22); color: #c4b5fd;'
+                    return df_styles
+
+                st.dataframe(K_ord_df.style.apply(style_partitions, axis=None).format("{:.2f}"), use_container_width=True)
 
             with tab7:
                 res_col1, res_col2 = st.columns(2)
@@ -607,7 +637,7 @@ else:
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
             with tab9:
-                st.write("**⚖️️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
+                st.write("**⚖️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
                 ext_fx, ext_fy, ext_fz = np.sum(F[0::3]), np.sum(F[1::3]), np.sum(F[2::3])
                 reac_rx, reac_ry, reac_rz = np.sum(R[0::3]), np.sum(R[1::3]), np.sum(R[2::3])
                 
@@ -663,4 +693,3 @@ else:
 
         except Exception as e:
             st.error(f"❌ Error en el cálculo matricial. Verifica la geometría y los datos. Detalle: {e}")
-        
