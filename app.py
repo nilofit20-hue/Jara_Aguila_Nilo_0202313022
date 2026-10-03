@@ -7,7 +7,7 @@ import matplotlib.patches as mpatches
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
 
-# --- DISEÑO VISUAL Y ESTILOS AVANZADOS (Fondo temático y botones interactivos) ---
+# --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
 st.markdown("""
 <style>
     /* Fondo con temática de Construcción y Análisis Estructural */
@@ -40,7 +40,6 @@ st.markdown("""
         letter-spacing: 1.2px;
     }
     
-    /* Efectos de interactividad al pasar el mouse (Hover) */
     .stButton button:hover {
         transform: translateY(-5px) scale(1.02);
         filter: brightness(1.2);
@@ -48,7 +47,7 @@ st.markdown("""
         cursor: pointer;
     }
 
-    /* Colores personalizados y dinámicos para cada botón de ejercicio */
+    /* Colores personalizados para cada botón de ejercicio */
     div.stButton:nth-of-type(1) > button {
         background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important;
         box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
@@ -66,7 +65,7 @@ st.markdown("""
         box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
     }
 
-    /* --- ESTILO LLAMATIVO Y CENTRADO PARA EL BOTÓN DE CÁLCULO --- */
+    /* --- ESTILO PARA EL BOTÓN DE CÁLCULO CENTRADO Y GRANDE --- */
     .centered-calc-btn {
         display: flex;
         justify-content: center;
@@ -78,18 +77,32 @@ st.markdown("""
         color: white !important;
         font-size: 24px !important;
         font-weight: 800 !important;
-        padding: 22px 40px !important;
+        height: 75px !important;
         border-radius: 40px !important;
         width: 100% !important;
         box-shadow: 0 0 25px rgba(255, 75, 43, 0.7) !important;
         border: 2px solid #ffffff !important;
         letter-spacing: 1.5px;
-        transition: all 0.3s ease-in-out;
     }
-    .centered-calc-btn button:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 40px rgba(255, 75, 43, 1) !important;
-        filter: brightness(1.2);
+
+    /* --- ESTILO PARA EL BOTÓN VOLVER CENTRADO Y GRANDE --- */
+    .centered-back-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+    .centered-back-btn button {
+        background: linear-gradient(135deg, #475569, #1e293b) !important;
+        color: white !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        height: 60px !important;
+        border-radius: 30px !important;
+        width: 100% !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        letter-spacing: 1px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -121,7 +134,6 @@ if st.session_state.pagina_actual == "menu":
         </div>
     """, unsafe_allow_html=True)
 
-    # Columnas para centrar los botones en una sola columna vertical estilizada
     _, col_centro, _ = st.columns([1.2, 1.6, 1.2])
 
     with col_centro:
@@ -158,9 +170,14 @@ if st.session_state.pagina_actual == "menu":
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
 # ==========================================
 else:
-    if st.button("🔙 Volver al Menú Principal"):
-        st.session_state.pagina_actual = "menu"
-        st.rerun()
+    # Botón Volver al Menú Principal centrado y grande
+    col_b1, col_b2, col_b3 = st.columns([1, 2, 1])
+    with col_b2:
+        st.markdown('<div class="centered-back-btn">', unsafe_allow_html=True)
+        if st.button("🔙 Volver al Menú Principal", use_container_width=True):
+            st.session_state.pagina_actual = "menu"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
     ejercicio_activo = st.session_state.ejercicio_seleccionado
@@ -310,11 +327,11 @@ else:
     st.pyplot(fig)
     st.markdown("---")
 
-    # --- MOTOR MATRICIAL 3D ---
+    # --- MOTOR MATRICIAL 3D (BOTÓN DE CÁLCULO CENTRADO Y GRANDE) ---
     col_esp1, col_calc, col_esp2 = st.columns([1, 2.5, 1])
     with col_calc:
         st.markdown('<div class="centered-calc-btn">', unsafe_allow_html=True)
-        iniciar_calculo = st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D")
+        iniciar_calculo = st.button("🚀 INICIAR CÁLCULO MATRICIAL 3D", use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     if iniciar_calculo:
@@ -388,8 +405,9 @@ else:
                 fuerzas_axiales.append(N)
                 estados.append("Tensión (Tracción)" if N > 0 else ("Compresión" if N < 0 else "Nulo"))
 
-            st.balloons()
-            st.success("✅ ¡Cálculo de la armadura espacial completado con éxito!")
+            # Notificación moderna sin globos (Toast y Success limpio)
+            st.toast("¡Cálculo de la armadura espacial completado con éxito!", icon="🚀")
+            st.success("✅ ¡Análisis matricial estructural procesado correctamente!")
             
             tab1, tab2, tab3, tab4 = st.tabs(["📉 Desplazamientos y Reacciones", "🧮 Matriz de Rigidez (K)", "🔗 Fuerzas Axiales", "🎨 Gráfico 3D de Esfuerzos"])
             
