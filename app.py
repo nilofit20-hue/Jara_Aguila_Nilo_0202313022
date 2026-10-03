@@ -194,8 +194,12 @@ else:
             </p>
         </div>
         """, unsafe_allow_html=True)
-        try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", width=550)
-        except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+        
+        # Imagen centrada para Ejercicio 1
+        img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
+        with img_c2:
+            try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
+            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -216,8 +220,12 @@ else:
             </p>
         </div>
         """, unsafe_allow_html=True)
-        try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", width=600)
-        except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
+        
+        # Imagen centrada para Ejercicio 2
+        img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
+        with img_c2:
+            try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", use_container_width=True)
+            except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
         
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5], "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
@@ -238,8 +246,12 @@ else:
             </p>
         </div>
         """, unsafe_allow_html=True)
-        try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", width=600)
-        except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
+        
+        # Imagen centrada para Ejercicio 3
+        img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
+        with img_c2:
+            try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", use_container_width=True)
+            except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5], 
@@ -270,8 +282,12 @@ else:
             </p>
         </div>
         """, unsafe_allow_html=True)
-        try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", width=600)
-        except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
+        
+        # Imagen centrada para Ejercicio 4
+        img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
+        with img_c2:
+            try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", use_container_width=True)
+            except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5, 6], 
