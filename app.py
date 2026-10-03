@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import streamlit.components.v1 as components
 
-# Configuración inicial con el nombre y código del estudiante para compartir
+# Configuración inicial con el código exacto del estudiante
 st.set_page_config(page_title="JARA AGUILA NILO 0202313022", page_icon="🏗️", layout="wide")
 
-# --- INYECCIÓN DE METADATOS PARA WHATSAPP Y REDES SOCIALES ---
+# --- INYECCIÓN DE METADATOS ACTUALIZADOS PARA WHATSAPP ---
 st.markdown("""
     <head>
         <meta property="og:title" content="JARA AGUILA NILO 0202313022">
@@ -278,7 +278,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
