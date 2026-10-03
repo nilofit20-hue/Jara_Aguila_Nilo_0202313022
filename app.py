@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import streamlit.components.v1 as components
 
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
@@ -138,6 +139,15 @@ if "ejercicio_seleccionado" not in st.session_state:
 # 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO EN COLUMNA CENTRADA)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
+    # Limpiar el hash de la URL usando JavaScript invisible
+    components.html("""
+        <script>
+            if (window.location.hash) {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
+        </script>
+    """, height=0)
+
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Tarjeta superior con el autor destacado
@@ -225,7 +235,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -310,7 +320,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", use_container_width=True)
-            except: st.warning("⚠️️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5, 6], 
@@ -637,7 +647,7 @@ else:
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
             with tab8:
-                st.write("**⚖️️ Comprobación de Equilibrio Estático (Sumatoria de Fuerzas = 0)**")
+                st.write("**⚖️ Comprobación de Equilibrio Estático (Sumatoria de Fuerzas = 0)**")
                 ext_fx, ext_fy, ext_fz = np.sum(F[0::3]), np.sum(F[1::3]), np.sum(F[2::3])
                 reac_rx, reac_ry, reac_rz = np.sum(R[0::3]), np.sum(R[1::3]), np.sum(R[2::3])
                 
