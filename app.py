@@ -290,7 +290,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", use_container_width=True)
-            except: st.warning("⚠️️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5, 6], 
@@ -320,7 +320,7 @@ else:
         st.subheader("🔗 Conectividad de Barras (3D)")
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
-    # --- VISTA PREVIA 3D ---
+    # --- VISTA PREVIA 3D (CON ETIQUETADO DE BARRAS EN ROJO) ---
     st.subheader("👁️ Vista Previa 3D de la Estructura")
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
@@ -330,7 +330,15 @@ else:
         try:
             n1 = nodos_df[nodos_df["Nodo"] == barra["Nodo_Inicial"]].iloc[0]
             n2 = nodos_df[nodos_df["Nodo"] == barra["Nodo_Final"]].iloc[0]
+            
+            # Dibujar la línea de la barra
             ax.plot([n1["X (m)"], n2["X (m)"]], [n1["Y (m)"], n2["Y (m)"]], [n1["Z (m)"], n2["Z (m)"]], color='#2c3e50', lw=2)
+            
+            # Etiquetar el número de la barra en el punto medio (estilo croquis)
+            mx = (n1["X (m)"] + n2["X (m)"]) / 2
+            my = (n1["Y (m)"] + n2["Y (m)"]) / 2
+            mz = (n1["Z (m)"] + n2["Z (m)"]) / 2
+            ax.text(mx, my, mz, f"[{int(barra['Barra'])}]", color='red', fontsize=10, fontweight='bold')
         except: pass 
 
     try:
@@ -424,7 +432,7 @@ else:
             
             fuerzas_axiales = []
             estados = []
-            for idx, barra in barras_clean.iterrows():
+            for _, barra in barras_clean.iterrows():
                 idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
                 idx2 = nodo_idx[int(barra["Nodo_Final"])]
                 n1, n2 = nodos_clean.iloc[idx1], nodos_clean.iloc[idx2]
@@ -446,7 +454,7 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # Pestañas ampliadas con los nuevos resultados académicos
+            # Pestañas de resultados
             tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
                 "📉 Desplazamientos y Reacciones", 
                 "🧮 Matriz de Rigidez (K)", 
