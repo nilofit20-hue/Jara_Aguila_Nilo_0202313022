@@ -24,14 +24,14 @@ st.markdown("""
     
     /* Estilos para hacer las pestañas (Tabs) más grandes, visibles y estéticas */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
+        gap: 8px;
     }
     .stTabs [data-baseweb="tab"] {
         height: 52px;
         background-color: rgba(30, 41, 59, 0.85);
         border-radius: 12px 12px 0px 0px;
-        padding: 0 15px;
-        font-size: 16px !important;
+        padding: 0 14px;
+        font-size: 15px !important;
         font-weight: 700 !important;
         color: #cbd5e1 !important;
         border: 1px solid rgba(255, 255, 255, 0.15);
@@ -484,12 +484,13 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # --- PESTAÑAS ORDENADAS CON MATRICES GLOBALES POR ELEMENTO ---
-            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+            # --- PESTAÑAS ORDENADAS INCLUYENDO EL DESGLOSE DETALLADO POR ELEMENTO ---
+            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
                 "📐 Geometría y Barras", 
                 "📋 Partición de GDL", 
                 "🧮 Matrices Locales (k)",
                 "🌐 Matrices Globales por Elemento (Ke)",
+                "📑 Desglose por Elemento",
                 "🧮 Matriz Global del Sistema (K)", 
                 "📉 Desplazamientos y Reacciones", 
                 "🔗 Fuerzas Axiales", 
@@ -498,12 +499,54 @@ else:
             ])
             
             with tab1:
-                st.write("**📐 Propiedades Geométricas, Ángulos y Cosenos Directores de las Barras**")
+                st.write("**📐 Propiedades Geométricas y Cosenos Directores de las Barras**")
                 geom_df = pd.DataFrame(elementos_info)
                 st.dataframe(geom_df, hide_index=True, use_container_width=True)
-                
-                st.markdown("---")
-                st.write("**📑 Memoria Detallada por Elemento (Ángulos y Matriz Local)**")
+
+            with tab2:
+                st.write("**📋 Tabla de Partición de Grados de Libertad (GDL)**")
+                gdl_data = []
+                for idx, row in nodos_clean.iterrows():
+                    n_id = int(row["Nodo"])
+                    gdl_x, gdl_y, gdl_z = 3*idx, 3*idx+1, 3*idx+2
+                    gdl_data.append({
+                        "Nodo": n_id,
+                        "GDL X": f"{gdl_x} ({'Restringido' if row['Restringido_X'] else 'Libre'})",
+                        "GDL Y": f"{gdl_y} ({'Restringido' if row['Restringido_Y'] else 'Libre'})",
+                        "GDL Z": f"{gdl_z} ({'Restringido' if row['Restringido_Z'] else 'Libre'})"
+                    })
+                gdl_df = pd.DataFrame(gdl_data)
+                st.dataframe(gdl_df, hide_index=True, use_container_width=True)
+                st.info(f"💡 **Resumen Estático:** {len(gdl_libres)} GDL Libres (Submatriz K_LL) y {len(gdl_restringidos)} GDL Restringidos en apoyos.")
+
+            with tab3:
+                st.write("**🧮 Matriz de Rigidez Local ($k$) de cada Barra (6x6)**")
+                local_labels = ["u1", "v1", "w1", "u2", "v2", "w2"]
+                for b_id, k_mat in matrices_locales.items():
+                    st.markdown(f"**Barra [{b_id}] (Eje Local)**")
+                    k_df = pd.DataFrame(k_mat, columns=local_labels, index=local_labels)
+                    st.dataframe(k_df.style.format("{:.2f}"), use_container_width=True)
+                    st.markdown("---")
+
+            with tab4:
+                st.write("**🌐 Matriz Global de Rigidez de Cada Elemento ($Ke$)**")
+                st.info("💡 Expresada con los grados de libertad globales exactos de sus nudos inicial y final.")
+                for _, barra in barras_clean.iterrows():
+                    b_id = int(barra["Barra"])
+                    n_ini = int(barra["Nodo_Inicial"])
+                    n_fin = int(barra["Nodo_Final"])
+                    idx1 = nodo_idx[n_ini]
+                    idx2 = nodo_idx[n_fin]
+                    gdl_elem = [3*idx1, 3*idx1+1, 3*idx1+2, 3*idx2, 3*idx2+1, 3*idx2+2]
+                    
+                    st.markdown(f"**Elemento [{b_id}] (Nodos N{n_ini} $\\to$ N{n_fin})**")
+                    ke_mat = matrices_globales_elemento[b_id]
+                    ke_df = pd.DataFrame(ke_mat, columns=gdl_elem, index=gdl_elem)
+                    st.dataframe(ke_df.style.format("{:.2f}"), use_container_width=True)
+                    st.markdown("---")
+
+            with tab5:
+                st.write("**📑 Memoria Detallada y Ángulos por Elemento**")
                 for _, barra in barras_clean.iterrows():
                     b_id = int(barra["Barra"])
                     n_ini = int(barra["Nodo_Inicial"])
@@ -540,55 +583,13 @@ else:
                         """)
                     st.markdown("---")
 
-            with tab2:
-                st.write("**📋 Tabla de Partición de Grados de Libertad (GDL)**")
-                gdl_data = []
-                for idx, row in nodos_clean.iterrows():
-                    n_id = int(row["Nodo"])
-                    gdl_x, gdl_y, gdl_z = 3*idx, 3*idx+1, 3*idx+2
-                    gdl_data.append({
-                        "Nodo": n_id,
-                        "GDL X": f"{gdl_x} ({'Restringido' if row['Restringido_X'] else 'Libre'})",
-                        "GDL Y": f"{gdl_y} ({'Restringido' if row['Restringido_Y'] else 'Libre'})",
-                        "GDL Z": f"{gdl_z} ({'Restringido' if row['Restringido_Z'] else 'Libre'})"
-                    })
-                gdl_df = pd.DataFrame(gdl_data)
-                st.dataframe(gdl_df, hide_index=True, use_container_width=True)
-                st.info(f"💡 **Resumen Estático:** {len(gdl_libres)} GDL Libres (Submatriz K_LL) y {len(gdl_restringidos)} GDL Restringidos en apoyos.")
-
-            with tab3:
-                st.write("**🧮 Matriz de Rigidez Local ($k$) de cada Barra (6x6)**")
-                local_labels = ["u1", "v1", "w1", "u2", "v2", "w2"]
-                for b_id, k_mat in matrices_locales.items():
-                    st.markdown(f"**Barra [{b_id}] (Eje Local)**")
-                    k_df = pd.DataFrame(k_mat, columns=local_labels, index=local_labels)
-                    st.dataframe(k_df.style.format("{:.2f}"), use_container_width=True)
-                    st.markdown("---")
-
-            with tab4:
-                st.write("**🌐 Matriz Global de Rigidez de Cada Elemento ($Ke$)**")
-                st.info("💡 Expresada con los grados de libertad globales exactos de sus nudos inicial y final (tal como lo resuelves en tus apuntes de la UNS).")
-                for _, barra in barras_clean.iterrows():
-                    b_id = int(barra["Barra"])
-                    n_ini = int(barra["Nodo_Inicial"])
-                    n_fin = int(barra["Nodo_Final"])
-                    idx1 = nodo_idx[n_ini]
-                    idx2 = nodo_idx[n_fin]
-                    gdl_elem = [3*idx1, 3*idx1+1, 3*idx1+2, 3*idx2, 3*idx2+1, 3*idx2+2]
-                    
-                    st.markdown(f"**Elemento [{b_id}] (Nodos N{n_ini} $\\to$ N{n_fin})**")
-                    ke_mat = matrices_globales_elemento[b_id]
-                    ke_df = pd.DataFrame(ke_mat, columns=gdl_elem, index=gdl_elem)
-                    st.dataframe(ke_df.style.format("{:.2f}"), use_container_width=True)
-                    st.markdown("---")
-
-            with tab5:
+            with tab6:
                 st.write("**🧮 Matriz de Rigidez Global del Sistema 3D (K)**")
                 gdl_labels = [f"N{int(n)}-{e}" for n in nodos_clean["Nodo"] for e in ['X', 'Y', 'Z']]
                 K_df = pd.DataFrame(K, columns=gdl_labels, index=gdl_labels)
                 st.dataframe(K_df.style.format("{:.2f}"), use_container_width=True)
 
-            with tab6:
+            with tab7:
                 res_col1, res_col2 = st.columns(2)
                 with res_col1:
                     st.write("**Desplazamientos Nodales 3D (m)**")
@@ -600,13 +601,13 @@ else:
                     reac_df = reac_df[(nodos_clean["Restringido_X"].values) | (nodos_clean["Restringido_Y"].values) | (nodos_clean["Restringido_Z"].values)]
                     st.dataframe(reac_df, hide_index=True, use_container_width=True)
 
-            with tab7:
+            with tab8:
                 st.write("**Fuerzas Internas en los Elementos**")
                 fuerzas_df = pd.DataFrame({"Barra": barras_clean["Barra"].astype(int), "Nodo Inicial": barras_clean["Nodo_Inicial"].astype(int), "Nodo Final": barras_clean["Nodo_Final"].astype(int), "Fuerza Axial": fuerzas_axiales, "Estado": estados})
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
-            with tab8:
-                st.write("**⚖️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
+            with tab9:
+                st.write("**⚖️️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
                 ext_fx, ext_fy, ext_fz = np.sum(F[0::3]), np.sum(F[1::3]), np.sum(F[2::3])
                 reac_rx, reac_ry, reac_rz = np.sum(R[0::3]), np.sum(R[1::3]), np.sum(R[2::3])
                 
@@ -616,10 +617,15 @@ else:
                     "Reacciones Totales ($\sum R$)": [reac_rx, reac_ry, reac_rz],
                     "Suma Global ($\sum F_{ext} + \sum R$)": [ext_fx + reac_rx, ext_fy + reac_ry, ext_fz + reac_rz]
                 })
-                st.dataframe(eq_df.style.format("{:.4f}"), hide_index=True, use_container_width=True)
+                numeric_cols_eq = [
+                    "Fuerzas Externas Totales ($\sum F_{ext}$)",
+                    "Reacciones Totales ($\sum R$)",
+                    "Suma Global ($\sum F_{ext} + \sum R$)"
+                ]
+                st.dataframe(eq_df.style.format("{:.4f}", subset=numeric_cols_eq), hide_index=True, use_container_width=True)
                 st.success("✅ ¡El sistema se encuentra en perfecto equilibrio estático ($\sum F \approx 0$)!")
 
-            with tab9:
+            with tab10:
                 st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
                 fig2 = plt.figure(figsize=(10, 6))
                 ax2 = fig2.add_subplot(projection='3d')
@@ -657,3 +663,4 @@ else:
 
         except Exception as e:
             st.error(f"❌ Error en el cálculo matricial. Verifica la geometría y los datos. Detalle: {e}")
+        
