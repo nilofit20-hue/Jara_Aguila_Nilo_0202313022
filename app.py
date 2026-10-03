@@ -120,6 +120,15 @@ if "ejercicio_seleccionado" not in st.session_state:
 if st.session_state.pagina_actual == "menu":
     st.markdown("<br>", unsafe_allow_html=True)
     
+    # Tarjeta / Insignia superior con el autor destacado
+    st.markdown("""
+        <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 12px 25px; border-radius: 35px; max-width: 650px; margin: 0 auto 25px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
+            <p style='color: #ffffff; font-size: 16px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
+                👨‍💻 Creado y Desarrollado por: <span style='color: #93c5fd; font-weight: 800;'>Jara Aguila Nilo</span> • UNS
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("""
         <div style='text-align: center;'>
             <h1 style='font-size: 38px; font-weight: 700; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
@@ -164,7 +173,7 @@ if st.session_state.pagina_actual == "menu":
             st.rerun()
 
     st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Jara Aguila Nilo</p>", unsafe_allow_html=True)
 
 # ==========================================
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
@@ -318,7 +327,7 @@ else:
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
     # --- VISTA PREVIA 3D ---
-    st.subheader("👁️ Vista Previa 3D de la Estructura")
+    st.subheader("👁️️ Vista Previa 3D de la Estructura")
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
     fig.patch.set_facecolor('#f0f2f6')
