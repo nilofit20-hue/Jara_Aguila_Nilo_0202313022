@@ -224,7 +224,7 @@ else:
         # Imagen centrada para Ejercicio 2
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
-            try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", use_container_width=True)
+            try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 ", use_container_width=True)
             except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
         
         nodos_default = pd.DataFrame({
