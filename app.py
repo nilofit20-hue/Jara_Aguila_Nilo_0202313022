@@ -484,13 +484,12 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # --- PESTAÑAS ORDENADAS EN FLUJO LÓGICO PROFESIONAL ---
-            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
-                "📐 Geometría y Barras", 
+            # --- FLUJO DE 9 PESTAÑAS DEFINITIVO Y ORDENADO ---
+            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+                "📐 Geometría y Elementos", 
                 "📋 Partición de GDL", 
                 "🧮 Matrices Locales (k)",
                 "🌐 Matrices Globales (Ke)",
-                "📑 Desglose por Elemento",
                 "🧮 Matriz Global Particionada (K)", 
                 "📉 Desplazamientos y Reacciones", 
                 "🔗 Fuerzas Axiales", 
@@ -499,9 +498,47 @@ else:
             ])
             
             with tab1:
-                st.write("**📐 Propiedades Geométricas y Cosenos Directores de las Barras**")
+                st.write("**📐 Propiedades Geométricas, Cosenos Directores y Memoria por Elemento**")
                 geom_df = pd.DataFrame(elementos_info)
                 st.dataframe(geom_df, hide_index=True, use_container_width=True)
+                
+                st.markdown("---")
+                st.write("**📑 Detalle de Ángulos y Parámetros por Elemento**")
+                for _, barra in barras_clean.iterrows():
+                    b_id = int(barra["Barra"])
+                    n_ini = int(barra["Nodo_Inicial"])
+                    n_fin = int(barra["Nodo_Final"])
+                    
+                    st.markdown(f"### 🔹 Elemento {b_id} (Nodos {n_ini} $\\to$ {n_fin})")
+                    n1 = nodos_clean[nodos_clean["Nodo"] == n_ini].iloc[0]
+                    n2 = nodos_clean[nodos_clean["Nodo"] == n_fin].iloc[0]
+                    dx = n2["X (m)"] - n1["X (m)"]
+                    dy = n2["Y (m)"] - n1["Y (m)"]
+                    dz = n2["Z (m)"] - n1["Z (m)"]
+                    L = np.sqrt(dx**2 + dy**2 + dz**2)
+                    l, m, n_dir = dx/L, dy/L, dz/L
+                    
+                    ang_x = np.degrees(np.arccos(np.clip(l, -1.0, 1.0)))
+                    ang_y = np.degrees(np.arccos(np.clip(m, -1.0, 1.0)))
+                    ang_z = np.degrees(np.arccos(np.clip(n_dir, -1.0, 1.0)))
+                    
+                    col_e1, col_e2 = st.columns(2)
+                    with col_e1:
+                        st.markdown(f"""
+                        * **Longitud ($L$):** {L:.4f} m
+                        * **Cosenos y Ángulos Directores:**
+                          * $l = {l:.4f}$ ($\\alpha = {ang_x:.2f}^\\circ$)
+                          * $m = {m:.4f}$ ($\\beta = {ang_y:.2f}^\\circ$)
+                          * $n = {n_dir:.4f}$ ($\\gamma = {ang_z:.2f}^\\circ$)
+                        """)
+                    with col_e2:
+                        e_col = [c for c in barras_clean.columns if "E (" in c][0]
+                        ea_l = (barra["Área (m2)"] * barra[e_col]) / L
+                        st.markdown(f"""
+                        * **Área ($A$):** {barra['Área (m2)']} m²
+                        * **Rigidez Axial ($EA/L$):** {ea_l:.2f}
+                        """)
+                    st.markdown("---")
 
             with tab2:
                 st.write("**📋 Tabla de Partición de Grados de Libertad (GDL)**")
@@ -546,44 +583,6 @@ else:
                     st.markdown("---")
 
             with tab5:
-                st.write("**📑 Memoria Detallada y Ángulos por Elemento**")
-                for _, barra in barras_clean.iterrows():
-                    b_id = int(barra["Barra"])
-                    n_ini = int(barra["Nodo_Inicial"])
-                    n_fin = int(barra["Nodo_Final"])
-                    
-                    st.markdown(f"### 🔹 Elemento {b_id} (Nodos {n_ini} $\\to$ {n_fin})")
-                    n1 = nodos_clean[nodos_clean["Nodo"] == n_ini].iloc[0]
-                    n2 = nodos_clean[nodos_clean["Nodo"] == n_fin].iloc[0]
-                    dx = n2["X (m)"] - n1["X (m)"]
-                    dy = n2["Y (m)"] - n1["Y (m)"]
-                    dz = n2["Z (m)"] - n1["Z (m)"]
-                    L = np.sqrt(dx**2 + dy**2 + dz**2)
-                    l, m, n_dir = dx/L, dy/L, dz/L
-                    
-                    ang_x = np.degrees(np.arccos(np.clip(l, -1.0, 1.0)))
-                    ang_y = np.degrees(np.arccos(np.clip(m, -1.0, 1.0)))
-                    ang_z = np.degrees(np.arccos(np.clip(n_dir, -1.0, 1.0)))
-                    
-                    col_e1, col_e2 = st.columns(2)
-                    with col_e1:
-                        st.markdown(f"""
-                        * **Longitud ($L$):** {L:.4f} m
-                        * **Cosenos y Ángulos Directores:**
-                          * $l = {l:.4f}$ ($\\alpha = {ang_x:.2f}^\\circ$)
-                          * $m = {m:.4f}$ ($\\beta = {ang_y:.2f}^\\circ$)
-                          * $n = {n_dir:.4f}$ ($\\gamma = {ang_z:.2f}^\\circ$)
-                        """)
-                    with col_e2:
-                        e_col = [c for c in barras_clean.columns if "E (" in c][0]
-                        ea_l = (barra["Área (m2)"] * barra[e_col]) / L
-                        st.markdown(f"""
-                        * **Área ($A$):** {barra['Área (m2)']} m²
-                        * **Rigidez Axial ($EA/L$):** {ea_l:.2f}
-                        """)
-                    st.markdown("---")
-
-            with tab6:
                 st.write("**🧮 Matriz Global del Sistema Particionada ($K_{LL}, K_{LR}, K_{RL}, K_{RR}$)**")
                 st.markdown("""
                 <div style='display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px;'>
@@ -597,7 +596,7 @@ else:
                 K_ordenada = K[np.ix_(gdl_ordenados, gdl_ordenados)]
                 n_free = len(gdl_libres)
                 
-                # REETIQUETADO ESTRICTAMENTE SECUENCIAL (1, 2, 3...) BASADO EN `idx`
+                # ETIQUETADO SECUENCIAL LIMPIO 1, 2, 3...
                 gdl_labels_ordenados = [
                     f"GDL {idx+1} (Libre)" if idx < n_free else f"GDL {idx+1} (Rest.)"
                     for idx, i in enumerate(gdl_ordenados)
@@ -620,7 +619,7 @@ else:
 
                 st.dataframe(K_ord_df.style.apply(style_partitions, axis=None).format("{:.2f}"), use_container_width=True)
 
-            with tab7:
+            with tab6:
                 res_col1, res_col2 = st.columns(2)
                 with res_col1:
                     st.write("**Desplazamientos Nodales 3D (m)**")
@@ -632,31 +631,31 @@ else:
                     reac_df = reac_df[(nodos_clean["Restringido_X"].values) | (nodos_clean["Restringido_Y"].values) | (nodos_clean["Restringido_Z"].values)]
                     st.dataframe(reac_df, hide_index=True, use_container_width=True)
 
-            with tab8:
+            with tab7:
                 st.write("**Fuerzas Internas en los Elementos**")
                 fuerzas_df = pd.DataFrame({"Barra": barras_clean["Barra"].astype(int), "Nodo Inicial": barras_clean["Nodo_Inicial"].astype(int), "Nodo Final": barras_clean["Nodo_Final"].astype(int), "Fuerza Axial": fuerzas_axiales, "Estado": estados})
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
-            with tab9:
-                st.write("**⚖️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
+            with tab8:
+                st.write("**⚖️️ Comprobación de Equilibrio Estático (Sumatoria de Fuerzas = 0)**")
                 ext_fx, ext_fy, ext_fz = np.sum(F[0::3]), np.sum(F[1::3]), np.sum(F[2::3])
                 reac_rx, reac_ry, reac_rz = np.sum(R[0::3]), np.sum(R[1::3]), np.sum(R[2::3])
                 
                 eq_df = pd.DataFrame({
                     "Eje Coordenado": ["Eje X", "Eje Y", "Eje Z"],
-                    "Fuerzas Externas Totales ($\sum F_{ext}$)": [ext_fx, ext_fy, ext_fz],
-                    "Reacciones Totales ($\sum R$)": [reac_rx, reac_ry, reac_rz],
-                    "Suma Global ($\sum F_{ext} + \sum R$)": [ext_fx + reac_rx, ext_fy + reac_ry, ext_fz + reac_rz]
+                    "Fuerzas Externas Totales (Sum F_ext)": [ext_fx, ext_fy, ext_fz],
+                    "Reacciones Totales (Sum R)": [reac_rx, reac_ry, reac_rz],
+                    "Suma Global (Sum F_ext + Sum R)": [ext_fx + reac_rx, ext_fy + reac_ry, ext_fz + reac_rz]
                 })
                 numeric_cols_eq = [
-                    "Fuerzas Externas Totales ($\sum F_{ext}$)",
-                    "Reacciones Totales ($\sum R$)",
-                    "Suma Global ($\sum F_{ext} + \sum R$)"
+                    "Fuerzas Externas Totales (Sum F_ext)",
+                    "Reacciones Totales (Sum R)",
+                    "Suma Global (Sum F_ext + Sum R)"
                 ]
                 st.dataframe(eq_df.style.format("{:.4f}", subset=numeric_cols_eq), hide_index=True, use_container_width=True)
-                st.success("✅ ¡El sistema se encuentra en perfecto equilibrio estático ($\sum F \approx 0$)!")
+                st.success("✅ ¡El sistema se encuentra en perfecto equilibrio estático (Sum F = 0)!")
 
-            with tab10:
+            with tab9:
                 st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
                 fig2 = plt.figure(figsize=(10, 6))
                 ax2 = fig2.add_subplot(projection='3d')
