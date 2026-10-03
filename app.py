@@ -6,7 +6,7 @@ import matplotlib.patches as mpatches
 import streamlit.components.v1 as components
 
 # Configuración inicial
-st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️️", layout="wide")
 
 # --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
 st.markdown("""
@@ -139,7 +139,7 @@ if "ejercicio_seleccionado" not in st.session_state:
 # 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO EN COLUMNA CENTRADA)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
-    # Limpiar el hash de la URL usando JavaScript invisible
+    # Script JS para limpiar cualquier hash en la URL
     components.html("""
         <script>
             if (window.location.hash) {
@@ -219,7 +219,9 @@ else:
 
     st.markdown("---")
     ejercicio_activo = st.session_state.ejercicio_seleccionado
-    st.title(f"🏗 SYNCRET: {ejercicio_activo}")
+    
+    # Título principal con HTML puro para evitar que Streamlit cree hashes en la URL
+    st.markdown(f"<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>🏗 SYNCRET: {ejercicio_activo}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
     if "Ejercicio 1" in ejercicio_activo:
@@ -235,7 +237,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -344,14 +346,14 @@ else:
 
     col_nodos, col_barras = st.columns(2)
     with col_nodos:
-        st.subheader("📍 Coordenadas y Cargas (3D)")
+        st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>📍 Coordenadas y Cargas (3D)</h3>", unsafe_allow_html=True)
         nodos_df = st.data_editor(nodos_default, num_rows="dynamic", key=f"nodos_{ejercicio_activo}", use_container_width=True)
     with col_barras:
-        st.subheader("🔗 Conectividad de Barras (3D)")
+        st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>🔗 Conectividad de Barras (3D)</h3>", unsafe_allow_html=True)
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
     # --- VISTA PREVIA 3D (CON ETIQUETADO DE BARRAS EN ROJO) ---
-    st.subheader("👁️ Vista Previa 3D de la Estructura")
+    st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>👁️ Vista Previa 3D de la Estructura</h3>", unsafe_allow_html=True)
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
     fig.patch.set_facecolor('#f0f2f6')
