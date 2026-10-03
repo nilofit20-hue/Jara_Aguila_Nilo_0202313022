@@ -405,9 +405,14 @@ else:
                 fuerzas_axiales.append(N)
                 estados.append("Tensión (Tracción)" if N > 0 else ("Compresión" if N < 0 else "Nulo"))
 
-            # Notificación moderna sin globos (Toast y Success limpio)
-            st.toast("¡Cálculo de la armadura espacial completado con éxito!", icon="🚀")
-            st.success("✅ ¡Análisis matricial estructural procesado correctamente!")
+            # Lanza globos de celebración y muestra cartel centrado en pantalla
+            st.balloons()
+            st.markdown("""
+                <div style='text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35)); border: 2px solid #10b981; padding: 22px; border-radius: 18px; margin: 30px auto; max-width: 750px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);'>
+                    <h3 style='color: #34d399 !important; margin: 0; font-size: 24px; font-weight: 800;'>🚀 ¡Cálculo de la armadura espacial completado con éxito!</h3>
+                    <p style='color: #e2e8f0; font-size: 16px; margin: 8px 0 0 0;'>Análisis matricial estructural procesado correctamente.</p>
+                </div>
+            """, unsafe_allow_html=True)
             
             tab1, tab2, tab3, tab4 = st.tabs(["📉 Desplazamientos y Reacciones", "🧮 Matriz de Rigidez (K)", "🔗 Fuerzas Axiales", "🎨 Gráfico 3D de Esfuerzos"])
             
