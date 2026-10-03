@@ -13,12 +13,12 @@ st.markdown("""
     .stApp { background: linear-gradient(to bottom right, #090d16, #141b2d); }
     h1, h2, h3 { color: #f7fafc !important; text-align: center; font-family: sans-serif; }
     
-    /* Estilo para los botones de las tarjetas del menú principal */
+    /* Estilo para los botones de las tarjetas del menú principal en columna */
     .main-menu-card button {
         border-radius: 18px !important;
         font-weight: bold !important;
         font-size: 22px !important;
-        height: 130px !important;
+        height: 90px !important;
         width: 100% !important;
         color: white !important;
         box-shadow: 0 8px 16px rgba(0,0,0,0.5);
@@ -31,7 +31,7 @@ st.markdown("""
         letter-spacing: 1px;
     }
     .main-menu-card button:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: 0 12px 24px rgba(0,0,0,0.7);
         filter: brightness(1.15);
         border-color: rgba(255,255,255,0.5) !important;
@@ -73,7 +73,7 @@ if "ejercicio_seleccionado" not in st.session_state:
     st.session_state.ejercicio_seleccionado = "Ejercicio 1"
 
 # ==========================================
-# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO CENTRADO Y SIMÉTRICO)
+# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO EN COLUMNA CENTRADA)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
     st.markdown("<br>", unsafe_allow_html=True)
@@ -86,58 +86,59 @@ if st.session_state.pagina_actual == "menu":
             <p style='color: #a0aec0; font-size: 20px; font-weight: 400; margin-top: 0;'>
                 Procedimiento para Armaduras en 3D
             </p>
-            <p style='color: #e2e8f0; font-size: 16px; margin-top: 15px; margin-bottom: 35px;'>
+            <p style='color: #e2e8f0; font-size: 16px; margin-top: 15px; margin-bottom: 30px;'>
                 🎯 Selecciona el Sistema Estructural a Evaluar
             </p>
         </div>
     """, unsafe_allow_html=True)
 
-    _, col_centro, _ = st.columns([1, 2.2, 1])
+    # Creamos columnas para centrar la columna única de botones
+    _, col_centro, _ = st.columns([1.2, 1.6, 1.2])
 
     with col_centro:
-        sub_c1, sub_c2 = st.columns(2, gap="medium")
-        
-        with sub_c1:
-            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-            st.markdown("<style>div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; }</style>", unsafe_allow_html=True)
-            if st.button("🔷 EJERCICIO 1"):
-                st.session_state.ejercicio_seleccionado = "Ejercicio 1"
-                st.session_state.pagina_actual = "detalle"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        # Botón Ejercicio 1
+        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
+        st.markdown("<style>div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; }</style>", unsafe_allow_html=True)
+        if st.button("🔷 EJERCICIO 1", use_container_width=True):
+            st.session_state.ejercicio_seleccionado = "Ejercicio 1"
+            st.session_state.pagina_actual = "detalle"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        with sub_c2:
-            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-            st.markdown("<style>div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; }</style>", unsafe_allow_html=True)
-            if st.button("🟢 EJERCICIO 2"):
-                st.session_state.ejercicio_seleccionado = "Ejercicio 2"
-                st.session_state.pagina_actual = "detalle"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+        # Botón Ejercicio 2
+        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
+        st.markdown("<style>div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; }</style>", unsafe_allow_html=True)
+        if st.button("🟢 EJERCICIO 2", use_container_width=True):
+            st.session_state.ejercicio_seleccionado = "Ejercicio 2"
+            st.session_state.pagina_actual = "detalle"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        sub_c3, sub_c4 = st.columns(2, gap="medium")
+        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-        with sub_c3:
-            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-            st.markdown("<style>div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; }</style>", unsafe_allow_html=True)
-            if st.button("🔶 EJERCICIO 3"):
-                st.session_state.ejercicio_seleccionado = "Ejercicio 3"
-                st.session_state.pagina_actual = "detalle"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        # Botón Ejercicio 3
+        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
+        st.markdown("<style>div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; }</style>", unsafe_allow_html=True)
+        if st.button("🔶 EJERCICIO 3", use_container_width=True):
+            st.session_state.ejercicio_seleccionado = "Ejercicio 3"
+            st.session_state.pagina_actual = "detalle"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        with sub_c4:
-            st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-            st.markdown("<style>div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }</style>", unsafe_allow_html=True)
-            if st.button("🟣 EJERCICIO 4"):
-                st.session_state.ejercicio_seleccionado = "Ejercicio 4"
-                st.session_state.pagina_actual = "detalle"
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+        # Botón Ejercicio 4
+        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
+        st.markdown("<style>div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }</style>", unsafe_allow_html=True)
+        if st.button("🟣 EJERCICIO 4", use_container_width=True):
+            st.session_state.ejercicio_seleccionado = "Ejercicio 4"
+            st.session_state.pagina_actual = "detalle"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #718096; font-size: 14px;'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
 
 # ==========================================
@@ -181,12 +182,12 @@ else:
         <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #059669; margin-bottom: 25px;'>
             <h3 style='color: #34d399 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 2 (Clase)</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
-                Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN[cite: 14].
+                Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.
             </p>
         </div>
         """, unsafe_allow_html=True)
         try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 (Clase)", width=600)
-        except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
+        except: st.warning("⚠️️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
         
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5], "X (m)": [-4.0, 4.0, 0.0, 4.0, -4.0], "Y (m)": [-3.0, -3.0, 0.0, 3.0, 3.0], "Z (m)": [0.0, 0.0, 10.0, 0.0, 0.0],
@@ -235,7 +236,7 @@ else:
         <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #7c3aed; margin-bottom: 25px;'>
             <h3 style='color: #a78bfa !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 4</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
-                Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D[cite: 19].
+                Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -295,7 +296,7 @@ else:
     st.pyplot(fig)
     st.markdown("---")
 
-    # --- MOTOR MATRICIAL 3D (CON BOTÓN GIGANTE CENTRADO Y LLAMATIVO) ---
+    # --- MOTOR MATRICIAL 3D ---
     col_esp1, col_calc, col_esp2 = st.columns([1, 2.5, 1])
     with col_calc:
         st.markdown('<div class="centered-calc-btn">', unsafe_allow_html=True)
@@ -320,7 +321,7 @@ else:
                 fy_col = [c for c in nodos_clean.columns if "Fy" in c][0]
                 fz_col = [c for c in nodos_clean.columns if "Fz" in c][0]
                 
-                F[3*idx]     = float(row[fx_col]) if not pd.isna(row[fx_col]) else 0.0
+                F[3*idx]   = float(row[fx_col]) if not pd.isna(row[fx_col]) else 0.0
                 F[3*idx + 1] = float(row[fy_col]) if not pd.isna(row[fy_col]) else 0.0
                 F[3*idx + 2] = float(row[fz_col]) if not pd.isna(row[fz_col]) else 0.0
                 
