@@ -8,15 +8,6 @@ import streamlit.components.v1 as components
 # Configuración inicial con el código exacto del estudiante
 st.set_page_config(page_title="JARA AGUILA NILO 0202313022", page_icon="🏗️", layout="wide")
 
-# --- INYECCIÓN DE METADATOS PARA REDES Y WHATSAPP ---
-st.markdown("""
-    <head>
-        <meta property="og:title" content="JARA AGUILA NILO 0202313022">
-        <meta property="og:description" content="Sistematización del método de Rigidez - Análisis Estructural II • UNS">
-        <meta property="og:type" content="website">
-    </head>
-""", unsafe_allow_html=True)
-
 # --- SCRIPT GLOBAL PARA LIMPIAR LA URL DE HASHES ---
 components.html("""
     <script>
@@ -31,14 +22,17 @@ components.html("""
     </script>
 """, height=0)
 
-# --- DISEÑO VISUAL Y ESTILOS AVANZADOS (CONTENIDO MÁS ARRIBA) ---
+# --- DISEÑO VISUAL Y ESTILOS AVANZADOS (CONTENIDO PEGADO ARRIBA) ---
 st.markdown("""
 <style>
-    /* Reducir el espacio superior por defecto de Streamlit para subir todo el contenido */
+    /* Eliminar el espacio superior por defecto de Streamlit por completo */
     .block-container {
-        padding-top: 1.5rem !important;
-        padding-bottom: 2rem !important;
+        padding-top: 0rem !important;
+        padding-bottom: 1rem !important;
+        margin-top: -15px !important;
     }
+    
+    header {visibility: hidden;}
 
     /* Fondo con temática de Construcción y Análisis Estructural */
     .stApp { 
@@ -52,13 +46,13 @@ st.markdown("""
     
     /* Estilos base para los botones interactivos de cada ejercicio */
     .stButton button {
-        border-radius: 18px !important;
+        border-radius: 16px !important;
         font-weight: bold !important;
-        font-size: 22px !important;
-        height: 85px !important;
+        font-size: 20px !important;
+        height: 75px !important;
         width: 100% !important;
         color: white !important;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.5);
         transition: all 0.35s ease-in-out;
         border: 2px solid rgba(255,255,255,0.25) !important;
         display: flex !important;
@@ -69,7 +63,7 @@ st.markdown("""
     }
     
     .stButton button:hover {
-        transform: translateY(-5px) scale(1.02);
+        transform: translateY(-4px) scale(1.01);
         filter: brightness(1.2);
         border-color: rgba(255,255,255,0.8) !important;
         cursor: pointer;
@@ -90,7 +84,7 @@ st.markdown("""
     }
     div.stButton:nth-of-type(5) > button {
         background: linear-gradient(135deg, #be185d, #ec4899) !important;
-        box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
+        box-shadow: 0 6px 15px rgba(236, 72, 153, 0.4);
     }
 
     /* --- ESTILO PARA EL BOTÓN DE CÁLCULO CENTRADO Y GRANDE --- */
@@ -98,17 +92,17 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 25px 0 20px 0;
+        margin: 20px 0 15px 0;
     }
     .centered-calc-btn button {
         background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
         color: white !important;
-        font-size: 24px !important;
+        font-size: 22px !important;
         font-weight: 800 !important;
-        height: 70px !important;
-        border-radius: 40px !important;
+        height: 65px !important;
+        border-radius: 35px !important;
         width: 100% !important;
-        box-shadow: 0 0 25px rgba(255, 75, 43, 0.7) !important;
+        box-shadow: 0 0 20px rgba(255, 75, 43, 0.7) !important;
         border: 2px solid #ffffff !important;
         letter-spacing: 1.5px;
     }
@@ -118,17 +112,17 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 15px 0;
+        margin: 10px 0;
     }
     .centered-back-btn button {
         background: linear-gradient(135deg, #475569, #1e293b) !important;
         color: white !important;
-        font-size: 20px !important;
+        font-size: 18px !important;
         font-weight: 700 !important;
-        height: 55px !important;
-        border-radius: 30px !important;
+        height: 50px !important;
+        border-radius: 25px !important;
         width: 100% !important;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
         border: 2px solid rgba(255, 255, 255, 0.3) !important;
         letter-spacing: 1px;
     }
@@ -147,10 +141,10 @@ if "ejercicio_seleccionado" not in st.session_state:
 # ==========================================
 if st.session_state.pagina_actual == "menu":
     
-    # Tarjeta superior con el autor y código destacado (posicionada más arriba)
+    # Tarjeta superior con el autor y código destacado
     st.markdown("""
-        <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 10px 20px; border-radius: 30px; max-width: 650px; margin: 0 auto 20px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
-            <p style='color: #ffffff; font-size: 16px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
+        <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 8px 20px; border-radius: 25px; max-width: 650px; margin: 0 auto 15px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5);'>
+            <p style='color: #ffffff; font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
                 👨‍💻 Autor: <span style='color: #93c5fd; font-weight: 800;'>Jara Aguila Nilo (0202313022)</span> • UNS
             </p>
         </div>
@@ -158,13 +152,13 @@ if st.session_state.pagina_actual == "menu":
     
     st.markdown("""
         <div style='text-align: center;'>
-            <h1 style='font-size: 36px; font-weight: 700; color: #f7fafc; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
+            <h1 style='font-size: 34px; font-weight: 700; color: #f7fafc; margin-bottom: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
                 📊 Sistematización del método de Rigidez
             </h1>
-            <p style='color: #cbd5e1; font-size: 18px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
+            <p style='color: #cbd5e1; font-size: 17px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
                 Procedimiento para Armaduras en 3D
             </p>
-            <p style='color: #ffffff; font-size: 16px; margin-top: 10px; margin-bottom: 20px; font-weight: 600;'>
+            <p style='color: #ffffff; font-size: 15px; margin-top: 8px; margin-bottom: 15px; font-weight: 600;'>
                 🎯 Selecciona una Opción o Ejercicio a Evaluar
             </p>
         </div>
@@ -178,28 +172,28 @@ if st.session_state.pagina_actual == "menu":
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟢 EJERCICIO 2", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 2"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
         if st.button("🔶 EJERCICIO 3", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 3"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟣 EJERCICIO 4", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 4"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
         if st.button("📋 CONCLUSIONES DEL TRABAJO", use_container_width=True):
             st.session_state.pagina_actual = "conclusiones"
@@ -220,27 +214,26 @@ elif st.session_state.pagina_actual == "conclusiones":
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown("<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>📋 Conclusiones del Trabajo de Investigación</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #93c5fd; font-size: 16px;'>Sistematización del Método de Rigidez en Armaduras Espaciales 3D • UNS</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #f7fafc; font-size: 30px; margin-top: 5px;'>📋 Conclusiones del Trabajo de Investigación</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #93c5fd; font-size: 15px;'>Sistematización del Método de Rigidez en Armaduras Espaciales 3D • UNS</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     st.markdown("""
-    <div style='background-color: rgba(30, 41, 59, 0.9); padding: 30px; border-radius: 18px; border: 1.5px solid rgba(59, 130, 246, 0.4); box-shadow: 0 8px 25px rgba(0,0,0,0.5);'>
-        <ol style='color: #e2e8f0; font-size: 18px; line-height: 1.8; margin: 0; padding-left: 20px;'>
-            <li style='margin-bottom: 18px;'>
+    <div style='background-color: rgba(30, 41, 59, 0.9); padding: 25px; border-radius: 16px; border: 1.5px solid rgba(59, 130, 246, 0.4); box-shadow: 0 8px 25px rgba(0,0,0,0.5);'>
+        <ol style='color: #e2e8f0; font-size: 17px; line-height: 1.7; margin: 0; padding-left: 20px;'>
+            <li style='margin-bottom: 15px;'>
                 <b>Automatización del Método Matricial:</b> La aplicación del método de rigidez permite sistematizar el cálculo estructural de sistemas espaciales tridimensionales complejos, transformando operaciones algebraicas tediosas en un proceso algorítmico eficiente y preciso.
             </li>
-            <li style='margin-bottom: 18px;'>
+            <li style='margin-bottom: 15px;'>
                 <b>Importancia de la Geometría y Orientación:</b> El cálculo riguroso de los cosenos directores (l, m, n) y las longitudes reales (L) a partir de las coordenadas nodales es indispensable para realizar una correcta transformación entre el sistema de coordenadas local y global de cada barra.
             </li>
-            <li style='margin-bottom: 18px;'>
+            <li style='margin-bottom: 15px;'>
                 <b>Partición Estática Eficiente:</b> La estructuración y partición de la matriz global de rigidez en bloques (K_LL, K_LR, K_RL, K_RR) simplifica la resolución matemática del sistema, aislando los grados de libertad libres para determinar los desplazamientos nodales mediante inversión matricial.
             </li>
-            <li style='margin-bottom: 18px;'>
+            <li style='margin-bottom: 15px;'>
                 <b>Validación mediante Equilibrio Estático:</b> La comprobación global de la sumatoria de fuerzas externas frente a las reacciones obtenidas en los apoyos confirmó que los modelos desarrollados satisfacen estrictamente el principio de equilibrio estático (ΣF = 0).
             </li>
-            <li style='margin-bottom: 18px;'>
+            <li style='margin-bottom: 15px;'>
                 <b>Identificación de Elementos Críticos:</b> A través del análisis de las fuerzas internas axiales, se logró clasificar de manera automática el estado mecánico de cada barra (tracción o compresión), facilitando la evaluación del comportamiento estructural ante cargas aplicadas.
             </li>
             <li style='margin-bottom: 0px;'>
@@ -250,7 +243,7 @@ elif st.session_state.pagina_actual == "conclusiones":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
@@ -264,17 +257,16 @@ else:
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("---")
     ejercicio_activo = st.session_state.ejercicio_seleccionado
     
-    st.markdown(f"<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>🏗 SYNCRET: {ejercicio_activo}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align: center; color: #f7fafc; font-size: 30px; margin-top: 5px;'>🏗 SYNCRET: {ejercicio_activo}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
     if "Ejercicio 1" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #3b82f6; margin-bottom: 25px;'>
-            <div style='color: #60a5fa; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 1</div>
-            <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 18px; border-radius: 14px; border-left: 6px solid #3b82f6; margin-bottom: 20px;'>
+            <div style='color: #60a5fa; font-size: 19px; font-weight: bold; margin-bottom: 8px;'>📌 Enunciado Ejercicio 1</div>
+            <p style='color: #e2e8f0; font-size: 17px; line-height: 1.4; margin: 0;'>
                 Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.
             </p>
         </div>
@@ -297,9 +289,9 @@ else:
 
     elif "Ejercicio 2" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #10b981; margin-bottom: 25px;'>
-            <div style='color: #34d399; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 2</div>
-            <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 18px; border-radius: 14px; border-left: 6px solid #10b981; margin-bottom: 20px;'>
+            <div style='color: #34d399; font-size: 19px; font-weight: bold; margin-bottom: 8px;'>📌 Enunciado Ejercicio 2</div>
+            <p style='color: #e2e8f0; font-size: 17px; line-height: 1.4; margin: 0;'>
                 Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.
             </p>
         </div>
@@ -322,9 +314,9 @@ else:
 
     elif "Ejercicio 3" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #f59e0b; margin-bottom: 25px;'>
-            <div style='color: #fbbf24; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 3</div>
-            <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 18px; border-radius: 14px; border-left: 6px solid #f59e0b; margin-bottom: 20px;'>
+            <div style='color: #fbbf24; font-size: 19px; font-weight: bold; margin-bottom: 8px;'>📌 Enunciado Ejercicio 3</div>
+            <p style='color: #e2e8f0; font-size: 17px; line-height: 1.4; margin: 0;'>
                 Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.
             </p>
         </div>
@@ -357,9 +349,9 @@ else:
 
     else: # Ejercicio 4
         st.markdown("""
-        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #8b5cf6; margin-bottom: 25px;'>
-            <div style='color: #a78bfa; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 4</div>
-            <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 18px; border-radius: 14px; border-left: 6px solid #8b5cf6; margin-bottom: 20px;'>
+            <div style='color: #a78bfa; font-size: 19px; font-weight: bold; margin-bottom: 8px;'>📌 Enunciado Ejercicio 4</div>
+            <p style='color: #e2e8f0; font-size: 17px; line-height: 1.4; margin: 0;'>
                 Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.
             </p>
         </div>
@@ -392,15 +384,15 @@ else:
 
     col_nodos, col_barras = st.columns(2)
     with col_nodos:
-        st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-bottom: 8px;'>📍 Coordenadas y Cargas (3D)</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 17px; font-weight: bold; color: #f7fafc; margin-bottom: 6px;'>📍 Coordenadas y Cargas (3D)</div>", unsafe_allow_html=True)
         nodos_df = st.data_editor(nodos_default, num_rows="dynamic", key=f"nodos_{ejercicio_activo}", use_container_width=True)
     with col_barras:
-        st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-bottom: 8px;'>🔗 Conectividad de Barras (3D)</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 17px; font-weight: bold; color: #f7fafc; margin-bottom: 6px;'>🔗 Conectividad de Barras (3D)</div>", unsafe_allow_html=True)
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
     # --- VISTA PREVIA 3D (CON ETIQUETADO DE BARRAS EN ROJO) ---
-    st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-top: 15px; margin-bottom: 8px;'>👁️ Vista Previa 3D de la Estructura</div>", unsafe_allow_html=True)
-    fig = plt.figure(figsize=(10, 5))
+    st.markdown("<div style='font-size: 17px; font-weight: bold; color: #f7fafc; margin-top: 10px; margin-bottom: 6px;'>👁️️ Vista Previa 3D de la Estructura</div>", unsafe_allow_html=True)
+    fig = plt.figure(figsize=(10, 4.5))
     ax = fig.add_subplot(projection='3d')
     fig.patch.set_facecolor('#f0f2f6')
 
@@ -423,9 +415,9 @@ else:
             ax.text(nodo["X (m)"], nodo["Y (m)"], nodo["Z (m)"], f" N{int(nodo['Nodo'])}", fontsize=10, fontweight='bold')
     except: pass
 
-    ax.set_xlabel('X (m)', labelpad=12)
-    ax.set_ylabel('Y (m)', labelpad=12)
-    ax.set_zlabel('Z (m)', labelpad=12)
+    ax.set_xlabel('X (m)', labelpad=10)
+    ax.set_ylabel('Y (m)', labelpad=10)
+    ax.set_zlabel('Z (m)', labelpad=10)
     ax.margins(0.1)
     st.pyplot(fig)
     st.markdown("---")
@@ -536,9 +528,9 @@ else:
             # Lanza globos y cartel de éxito centrado
             st.balloons()
             st.markdown("""
-                <div style='text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35)); border: 2px solid #10b981; padding: 22px; border-radius: 18px; margin: 30px auto; max-width: 750px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);'>
-                    <h3 style='color: #34d399 !important; margin: 0; font-size: 24px; font-weight: 800;'>🚀 ¡Cálculo de la armadura espacial completado con éxito!</h3>
-                    <p style='color: #e2e8f0; font-size: 16px; margin: 8px 0 0 0;'>Análisis matricial estructural procesado correctamente.</p>
+                <div style='text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35)); border: 2px solid #10b981; padding: 18px; border-radius: 16px; margin: 20px auto; max-width: 750px; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);'>
+                    <h3 style='color: #34d399 !important; margin: 0; font-size: 22px; font-weight: 800;'>🚀 ¡Cálculo de la armadura espacial completado con éxito!</h3>
+                    <p style='color: #e2e8f0; font-size: 15px; margin: 6px 0 0 0;'>Análisis matricial estructural procesado correctamente.</p>
                 </div>
             """, unsafe_allow_html=True)
             
@@ -715,7 +707,7 @@ else:
 
             with tab9:
                 st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
-                fig2 = plt.figure(figsize=(10, 6))
+                fig2 = plt.figure(figsize=(10, 5))
                 ax2 = fig2.add_subplot(projection='3d')
                 fig2.patch.set_facecolor('#f0f2f6')
                 
@@ -744,9 +736,9 @@ else:
                 blue_patch, red_patch, gray_patch = mpatches.Patch(color='#3498db', label='Tensión (+)'), mpatches.Patch(color='#e74c3c', label='Compresión (-)'), mpatches.Patch(color='#95a5a6', label='Nulo (0)')
                 ax2.legend(handles=[blue_patch, red_patch, gray_patch], loc='upper right')
                 
-                ax2.set_xlabel('X (m)', labelpad=12)
-                ax2.set_ylabel('Y (m)', labelpad=12)
-                ax2.set_zlabel('Z (m)', labelpad=12)
+                ax2.set_xlabel('X (m)', labelpad=10)
+                ax2.set_ylabel('Y (m)', labelpad=10)
+                ax2.set_zlabel('Z (m)', labelpad=10)
                 st.pyplot(fig2)
 
         except Exception as e:
