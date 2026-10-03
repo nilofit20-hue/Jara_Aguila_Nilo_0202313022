@@ -8,7 +8,7 @@ import streamlit.components.v1 as components
 # Configuración inicial con el código exacto del estudiante
 st.set_page_config(page_title="JARA AGUILA NILO 0202313022", page_icon="🏗️", layout="wide")
 
-# --- INYECCIÓN DE METADATOS ACTUALIZADOS PARA WHATSAPP ---
+# --- INYECCIÓN DE METADATOS PARA REDES Y WHATSAPP ---
 st.markdown("""
     <head>
         <meta property="og:title" content="JARA AGUILA NILO 0202313022">
@@ -31,9 +31,15 @@ components.html("""
     </script>
 """, height=0)
 
-# --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
+# --- DISEÑO VISUAL Y ESTILOS AVANZADOS (CONTENIDO MÁS ARRIBA) ---
 st.markdown("""
 <style>
+    /* Reducir el espacio superior por defecto de Streamlit para subir todo el contenido */
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+    }
+
     /* Fondo con temática de Construcción y Análisis Estructural */
     .stApp { 
         background: linear-gradient(rgba(9, 13, 22, 0.90), rgba(20, 27, 45, 0.94)), 
@@ -49,7 +55,7 @@ st.markdown("""
         border-radius: 18px !important;
         font-weight: bold !important;
         font-size: 22px !important;
-        height: 90px !important;
+        height: 85px !important;
         width: 100% !important;
         color: white !important;
         box-shadow: 0 8px 20px rgba(0,0,0,0.6);
@@ -92,14 +98,14 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 35px 0 25px 0;
+        margin: 25px 0 20px 0;
     }
     .centered-calc-btn button {
         background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
         color: white !important;
         font-size: 24px !important;
         font-weight: 800 !important;
-        height: 75px !important;
+        height: 70px !important;
         border-radius: 40px !important;
         width: 100% !important;
         box-shadow: 0 0 25px rgba(255, 75, 43, 0.7) !important;
@@ -112,14 +118,14 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 20px 0;
+        margin: 15px 0;
     }
     .centered-back-btn button {
         background: linear-gradient(135deg, #475569, #1e293b) !important;
         color: white !important;
         font-size: 20px !important;
         font-weight: 700 !important;
-        height: 60px !important;
+        height: 55px !important;
         border-radius: 30px !important;
         width: 100% !important;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
@@ -140,11 +146,10 @@ if "ejercicio_seleccionado" not in st.session_state:
 # 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
-    st.markdown("<br>", unsafe_allow_html=True)
     
-    # Tarjeta superior con el autor y código destacado
+    # Tarjeta superior con el autor y código destacado (posicionada más arriba)
     st.markdown("""
-        <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 12px 25px; border-radius: 35px; max-width: 650px; margin: 0 auto 25px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
+        <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 10px 20px; border-radius: 30px; max-width: 650px; margin: 0 auto 20px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
             <p style='color: #ffffff; font-size: 16px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
                 👨‍💻 Autor: <span style='color: #93c5fd; font-weight: 800;'>Jara Aguila Nilo (0202313022)</span> • UNS
             </p>
@@ -153,13 +158,13 @@ if st.session_state.pagina_actual == "menu":
     
     st.markdown("""
         <div style='text-align: center;'>
-            <h1 style='font-size: 38px; font-weight: 700; color: #f7fafc; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
+            <h1 style='font-size: 36px; font-weight: 700; color: #f7fafc; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
                 📊 Sistematización del método de Rigidez
             </h1>
-            <p style='color: #cbd5e1; font-size: 20px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
+            <p style='color: #cbd5e1; font-size: 18px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
                 Procedimiento para Armaduras en 3D
             </p>
-            <p style='color: #ffffff; font-size: 17px; margin-top: 15px; margin-bottom: 30px; font-weight: 600;'>
+            <p style='color: #ffffff; font-size: 16px; margin-top: 10px; margin-bottom: 20px; font-weight: 600;'>
                 🎯 Selecciona una Opción o Ejercicio a Evaluar
             </p>
         </div>
@@ -173,35 +178,35 @@ if st.session_state.pagina_actual == "menu":
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟢 EJERCICIO 2", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 2"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
         if st.button("🔶 EJERCICIO 3", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 3"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
         if st.button("🟣 EJERCICIO 4", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 4"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
 
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
         if st.button("📋 CONCLUSIONES DEL TRABAJO", use_container_width=True):
             st.session_state.pagina_actual = "conclusiones"
             st.rerun()
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Jara Aguila Nilo (0202313022)</p>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 13px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Jara Aguila Nilo (0202313022)</p>", unsafe_allow_html=True)
 
 # ==========================================
 # 📋 PANTALLA DE CONCLUSIONES DEL TRABAJO
@@ -278,7 +283,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
