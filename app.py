@@ -205,7 +205,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
-            except: st.warning("⚠️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️️ Sube la imagen 'ej1.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4], "X (m)": [0.0, 2.0, 1.0, 0.8], "Y (m)": [0.0, 0.0, 1.6, 1.0], "Z (m)": [0.0, 0.0, 0.0, 2.5],
@@ -391,6 +391,7 @@ else:
             
             K = np.zeros((n_gdl, n_gdl))
             elementos_info = []
+            matrices_locales = {}
             
             for _, barra in barras_clean.iterrows():
                 idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
@@ -405,6 +406,10 @@ else:
                 v = np.array([l, m, n_dir])
                 mat = np.outer(v, v)
                 k_local = EA_L * np.block([[mat, -mat], [-mat, mat]])
+                
+                # Almacenar matriz local de cada barra
+                matrices_locales[int(barra["Barra"])] = k_local
+                
                 gdl = [3*idx1, 3*idx1+1, 3*idx1+2, 3*idx2, 3*idx2+1, 3*idx2+2]
                 for i in range(6):
                     for j in range(6):
@@ -454,13 +459,14 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            # Pestañas de resultados
-            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+            # Pestañas de resultados ampliadas con Matrices Locales
+            tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
                 "📉 Desplazamientos y Reacciones", 
                 "🧮 Matriz de Rigidez (K)", 
                 "🔗 Fuerzas Axiales", 
                 "📋 Partición de GDL", 
                 "📐 Geometría y Barras", 
+                "🧮 Matrices Locales (k)",
                 "🎨 Gráfico 3D de Esfuerzos"
             ])
             
@@ -509,6 +515,15 @@ else:
                 st.dataframe(geom_df, hide_index=True, use_container_width=True)
 
             with tab6:
+                st.write("**🧮 Matriz de Rigidez Local (k) de cada Barra (6x6)**")
+                local_labels = ["u1", "v1", "w1", "u2", "v2", "w2"]
+                for b_id, k_mat in matrices_locales.items():
+                    st.markdown(f"**Barra [{b_id}]**")
+                    k_df = pd.DataFrame(k_mat, columns=local_labels, index=local_labels)
+                    st.dataframe(k_df.style.format("{:.2f}"), use_container_width=True)
+                    st.markdown("---")
+
+            with tab7:
                 st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
                 fig2 = plt.figure(figsize=(10, 6))
                 ax2 = fig2.add_subplot(projection='3d')
