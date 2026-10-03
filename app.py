@@ -275,7 +275,7 @@ else:
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", use_container_width=True)
-            except: st.warning("⚠️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️️ Sube la imagen 'ej3.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5], 
@@ -597,9 +597,10 @@ else:
                 K_ordenada = K[np.ix_(gdl_ordenados, gdl_ordenados)]
                 n_free = len(gdl_libres)
                 
+                # Reetiquetado consecutivo y ordenado (1, 2, 3...)
                 gdl_labels_ordenados = [
-                    f"GDL {i} (L)" if i in gdl_libres else f"GDL {i} (R)"
-                    for i in gdl_ordenados
+                    f"GDL {i+1} (Libre)" if idx < n_free else f"GDL {i+1} (Rest.)"
+                    for idx, i in enumerate(gdl_ordenados)
                 ]
                 K_ord_df = pd.DataFrame(K_ordenada, columns=gdl_labels_ordenados, index=gdl_labels_ordenados)
                 
@@ -637,7 +638,7 @@ else:
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
             with tab9:
-                st.write("**⚖️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
+                st.write("**⚖️️ Comprobación de Equilibrio Estático ($\sum F = 0$)**")
                 ext_fx, ext_fy, ext_fz = np.sum(F[0::3]), np.sum(F[1::3]), np.sum(F[2::3])
                 reac_rx, reac_ry, reac_rz = np.sum(R[0::3]), np.sum(R[1::3]), np.sum(R[2::3])
                 
