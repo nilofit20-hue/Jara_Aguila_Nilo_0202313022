@@ -214,7 +214,7 @@ else:
     elif "Ejercicio 2" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #10b981; margin-bottom: 25px;'>
-            <h3 style='color: #34d399 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 2 (Clase)</h3>
+            <h3 style='color: #34d399 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 2</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.
             </p>
@@ -224,7 +224,7 @@ else:
         # Imagen centrada para Ejercicio 2
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
-            try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2 ", use_container_width=True)
+            try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", use_container_width=True)
             except: st.warning("⚠️ Sube la imagen 'ej2.jpg' a tu repositorio de GitHub.")
         
         nodos_default = pd.DataFrame({
