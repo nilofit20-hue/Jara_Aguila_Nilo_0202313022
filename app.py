@@ -5,8 +5,33 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import streamlit.components.v1 as components
 
-# Configuración inicial con el título personalizado para la tarea
+# Configuración inicial
 st.set_page_config(page_title="TAREA - JARA AGUILA NILO", page_icon="🏗️", layout="wide")
+
+# --- INYECCIÓN DE METADATOS PARA WHATSAPP Y REDES SOCIALES ---
+st.markdown("""
+    <head>
+        <meta property="og:title" content="TAREA - JARA AGUILA NILO">
+        <meta property="og:description" content="Sistematización del método de Rigidez - Análisis Estructural II • UNS">
+        <meta property="og:type" content="website">
+    </head>
+""", unsafe_allow_html=True)
+
+# --- SCRIPT GLOBAL PARA LIMPIAR LA URL DE HASHES FEOS ---
+components.html("""
+    <script>
+        // Limpiar cualquier hash (#...) de la URL de forma inmediata y continua
+        if (window.location.hash) {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+        // Vigilar cambios por si acaso
+        window.onhashchange = function () {
+            if (window.location.hash) {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
+        };
+    </script>
+""", height=0)
 
 # --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
 st.markdown("""
@@ -114,18 +139,9 @@ if "ejercicio_seleccionado" not in st.session_state:
     st.session_state.ejercicio_seleccionado = "Ejercicio 1"
 
 # ==========================================
-# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO EN COLUMNA CENTRADA)
+# 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
-    # Script JS para limpiar hashes no deseados
-    components.html("""
-        <script>
-            if (window.location.hash) {
-                history.pushState("", document.title, window.location.pathname + window.location.search);
-            }
-        </script>
-    """, height=0)
-
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Tarjeta superior con el autor destacado
@@ -198,7 +214,6 @@ else:
     st.markdown("---")
     ejercicio_activo = st.session_state.ejercicio_seleccionado
     
-    # Título limpio sin generar hashes de anclaje en la URL
     st.markdown(f"<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>🏗 SYNCRET: {ejercicio_activo}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
