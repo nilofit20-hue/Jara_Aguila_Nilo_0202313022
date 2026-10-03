@@ -120,7 +120,7 @@ if "ejercicio_seleccionado" not in st.session_state:
 if st.session_state.pagina_actual == "menu":
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Tarjeta / Insignia superior con el autor destacado
+    # Tarjeta superior con el autor destacado
     st.markdown("""
         <div style='text-align: center; background: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(37, 99, 235, 0.65)); border: 1.5px solid rgba(255,255,255,0.35); padding: 12px 25px; border-radius: 35px; max-width: 650px; margin: 0 auto 25px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.6);'>
             <p style='color: #ffffff; font-size: 16px; font-weight: 600; margin: 0; letter-spacing: 0.5px;'>
@@ -179,7 +179,6 @@ if st.session_state.pagina_actual == "menu":
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
 # ==========================================
 else:
-    # Botón Volver al Menú Principal centrado y grande
     col_b1, col_b2, col_b3 = st.columns([1, 2, 1])
     with col_b2:
         st.markdown('<div class="centered-back-btn">', unsafe_allow_html=True)
@@ -193,7 +192,6 @@ else:
     st.title(f"🏗 SYNCRET: {ejercicio_activo}")
     st.markdown("---")
 
-    # Enunciados estilizados con letras grandes
     if "Ejercicio 1" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #3b82f6; margin-bottom: 25px;'>
@@ -204,7 +202,6 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        # Imagen centrada para Ejercicio 1
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej1.jpg", caption="Esquema Referencial - Ejercicio 1", use_container_width=True)
@@ -230,7 +227,6 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        # Imagen centrada para Ejercicio 2
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej2.jpg", caption="Esquema Referencial - Ejercicio 2", use_container_width=True)
@@ -256,7 +252,6 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        # Imagen centrada para Ejercicio 3
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej3.jpg", caption="Esquema Referencial - Ejercicio 3", use_container_width=True)
@@ -292,11 +287,10 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        # Imagen centrada para Ejercicio 4
         img_c1, img_c2, img_c3 = st.columns([1, 1.5, 1])
         with img_c2:
             try: st.image("ej4.jpg", caption="Esquema Referencial - Ejercicio 4", use_container_width=True)
-            except: st.warning("⚠️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
+            except: st.warning("⚠️️ Sube la imagen 'ej4.jpg' a tu repositorio de GitHub.")
 
         nodos_default = pd.DataFrame({
             "Nodo": [1, 2, 3, 4, 5, 6], 
@@ -327,7 +321,7 @@ else:
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
     # --- VISTA PREVIA 3D ---
-    st.subheader("👁️️ Vista Previa 3D de la Estructura")
+    st.subheader("👁️ Vista Previa 3D de la Estructura")
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
     fig.patch.set_facecolor('#f0f2f6')
@@ -352,7 +346,7 @@ else:
     st.pyplot(fig)
     st.markdown("---")
 
-    # --- MOTOR MATRICIAL 3D (BOTÓN DE CÁLCULO CENTRADO Y GRANDE) ---
+    # --- MOTOR MATRICIAL 3D ---
     col_esp1, col_calc, col_esp2 = st.columns([1, 2.5, 1])
     with col_calc:
         st.markdown('<div class="centered-calc-btn">', unsafe_allow_html=True)
@@ -388,6 +382,8 @@ else:
             gdl_libres = [i for i in range(n_gdl) if i not in gdl_restringidos]
             
             K = np.zeros((n_gdl, n_gdl))
+            elementos_info = []
+            
             for _, barra in barras_clean.iterrows():
                 idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
                 idx2 = nodo_idx[int(barra["Nodo_Final"])]
@@ -405,6 +401,17 @@ else:
                 for i in range(6):
                     for j in range(6):
                         K[gdl[i], gdl[j]] += k_local[i, j]
+                
+                elementos_info.append({
+                    "Barra": int(barra["Barra"]),
+                    "Nodo Ini": int(barra["Nodo_Inicial"]),
+                    "Nodo Fin": int(barra["Nodo_Final"]),
+                    "Longitud (m)": round(L, 4),
+                    "l (cos x)": round(l, 4),
+                    "m (cos y)": round(m, 4),
+                    "n (cos z)": round(n_dir, 4),
+                    "Rigidez EA/L": round(EA_L, 2)
+                })
                         
             K_libres = K[np.ix_(gdl_libres, gdl_libres)]
             F_libres = F[gdl_libres]
@@ -417,7 +424,7 @@ else:
             
             fuerzas_axiales = []
             estados = []
-            for _, barra in barras_clean.iterrows():
+            for idx, barra in barras_clean.iterrows():
                 idx1 = nodo_idx[int(barra["Nodo_Inicial"])]
                 idx2 = nodo_idx[int(barra["Nodo_Final"])]
                 n1, n2 = nodos_clean.iloc[idx1], nodos_clean.iloc[idx2]
@@ -430,7 +437,7 @@ else:
                 fuerzas_axiales.append(N)
                 estados.append("Tensión (Tracción)" if N > 0 else ("Compresión" if N < 0 else "Nulo"))
 
-            # Lanza globos de celebración y muestra cartel centrado en pantalla
+            # Lanza globos y cartel de éxito centrado
             st.balloons()
             st.markdown("""
                 <div style='text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35)); border: 2px solid #10b981; padding: 22px; border-radius: 18px; margin: 30px auto; max-width: 750px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);'>
@@ -439,7 +446,15 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-            tab1, tab2, tab3, tab4 = st.tabs(["📉 Desplazamientos y Reacciones", "🧮 Matriz de Rigidez (K)", "🔗 Fuerzas Axiales", "🎨 Gráfico 3D de Esfuerzos"])
+            # Pestañas ampliadas con los nuevos resultados académicos
+            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+                "📉 Desplazamientos y Reacciones", 
+                "🧮 Matriz de Rigidez (K)", 
+                "🔗 Fuerzas Axiales", 
+                "📋 Partición de GDL", 
+                "📐 Geometría y Barras", 
+                "🎨 Gráfico 3D de Esfuerzos"
+            ])
             
             with tab1:
                 res_col1, res_col2 = st.columns(2)
@@ -465,6 +480,27 @@ else:
                 st.dataframe(fuerzas_df, hide_index=True, use_container_width=True)
 
             with tab4:
+                st.write("**📋 Tabla de Partición de Grados de Libertad (GDL)**")
+                gdl_data = []
+                for idx, row in nodos_clean.iterrows():
+                    n_id = int(row["Nodo"])
+                    gdl_x, gdl_y, gdl_z = 3*idx, 3*idx+1, 3*idx+2
+                    gdl_data.append({
+                        "Nodo": n_id,
+                        "GDL X": f"{gdl_x} ({'Restringido' if row['Restringido_X'] else 'Libre'})",
+                        "GDL Y": f"{gdl_y} ({'Restringido' if row['Restringido_Y'] else 'Libre'})",
+                        "GDL Z": f"{gdl_z} ({'Restringido' if row['Restringido_Z'] else 'Libre'})"
+                    })
+                gdl_df = pd.DataFrame(gdl_data)
+                st.dataframe(gdl_df, hide_index=True, use_container_width=True)
+                st.info(f"💡 **Resumen Estático:** {len(gdl_libres)} GDL Libres (Submatriz K_LL) y {len(gdl_restringidos)} GDL Restringidos en apoyos.")
+
+            with tab5:
+                st.write("**📐 Propiedades Geométricas y Cosenos Directores de las Barras**")
+                geom_df = pd.DataFrame(elementos_info)
+                st.dataframe(geom_df, hide_index=True, use_container_width=True)
+
+            with tab6:
                 st.write("**Visualización Tridimensional de Esfuerzos y Reacciones en Apoyos**")
                 fig2 = plt.figure(figsize=(10, 6))
                 ax2 = fig2.add_subplot(projection='3d')
