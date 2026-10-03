@@ -7,37 +7,66 @@ import matplotlib.patches as mpatches
 # Configuración inicial
 st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️", layout="wide")
 
-# --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
+# --- DISEÑO VISUAL Y ESTILOS AVANZADOS (Fondo temático y botones interactivos) ---
 st.markdown("""
 <style>
-    .stApp { background: linear-gradient(to bottom right, #090d16, #141b2d); }
+    /* Fondo con temática de Construcción y Análisis Estructural */
+    .stApp { 
+        background: linear-gradient(rgba(9, 13, 22, 0.90), rgba(20, 27, 45, 0.94)), 
+                    url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    
     h1, h2, h3 { color: #f7fafc !important; text-align: center; font-family: sans-serif; }
     
-    /* Estilo para los botones de las tarjetas del menú principal en columna */
-    .main-menu-card button {
+    /* Estilos base para los botones interactivos de cada ejercicio */
+    .stButton button {
         border-radius: 18px !important;
         font-weight: bold !important;
         font-size: 22px !important;
-        height: 90px !important;
+        height: 95px !important;
         width: 100% !important;
         color: white !important;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255,255,255,0.2) !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        transition: all 0.35s ease-in-out;
+        border: 2px solid rgba(255,255,255,0.25) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
-        letter-spacing: 1px;
+        letter-spacing: 1.2px;
     }
-    .main-menu-card button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.7);
-        filter: brightness(1.15);
-        border-color: rgba(255,255,255,0.5) !important;
+    
+    /* Efectos de interactividad al pasar el mouse (Hover) */
+    .stButton button:hover {
+        transform: translateY(-5px) scale(1.02);
+        filter: brightness(1.2);
+        border-color: rgba(255,255,255,0.8) !important;
+        cursor: pointer;
     }
 
-    /* --- ESTILO LLAMATIVO, GRANDE Y CENTRADO PARA EL BOTÓN DE CÁLCULO --- */
+    /* Colores personalizados y dinámicos para cada botón de ejercicio */
+    div.stButton:nth-of-type(1) > button {
+        background: linear-gradient(135deg, #1d4ed8, #3b82f6) !important;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+    div.stButton:nth-of-type(2) > button {
+        background: linear-gradient(135deg, #047857, #10b981) !important;
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+    div.stButton:nth-of-type(3) > button {
+        background: linear-gradient(135deg, #b45309, #f59e0b) !important;
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+    }
+    div.stButton:nth-of-type(4) > button {
+        background: linear-gradient(135deg, #6d28d9, #8b5cf6) !important;
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+    }
+
+    /* --- ESTILO LLAMATIVO Y CENTRADO PARA EL BOTÓN DE CÁLCULO --- */
     .centered-calc-btn {
         display: flex;
         justify-content: center;
@@ -80,66 +109,50 @@ if st.session_state.pagina_actual == "menu":
     
     st.markdown("""
         <div style='text-align: center;'>
-            <h1 style='font-size: 38px; font-weight: 700; margin-bottom: 5px;'>
+            <h1 style='font-size: 38px; font-weight: 700; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
                 📊 Sistematización del método de Rigidez
             </h1>
-            <p style='color: #a0aec0; font-size: 20px; font-weight: 400; margin-top: 0;'>
+            <p style='color: #cbd5e1; font-size: 20px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
                 Procedimiento para Armaduras en 3D
             </p>
-            <p style='color: #e2e8f0; font-size: 16px; margin-top: 15px; margin-bottom: 30px;'>
+            <p style='color: #ffffff; font-size: 17px; margin-top: 15px; margin-bottom: 30px; font-weight: 600;'>
                 🎯 Selecciona el Sistema Estructural a Evaluar
             </p>
         </div>
     """, unsafe_allow_html=True)
 
-    # Creamos columnas para centrar la columna única de botones
+    # Columnas para centrar los botones en una sola columna vertical estilizada
     _, col_centro, _ = st.columns([1.2, 1.6, 1.2])
 
     with col_centro:
-        # Botón Ejercicio 1
-        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-        st.markdown("<style>div.stButton:nth-of-type(1) > button { background: linear-gradient(135deg, #1e3a8a, #2563eb) !important; }</style>", unsafe_allow_html=True)
         if st.button("🔷 EJERCICIO 1", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 1"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-        # Botón Ejercicio 2
-        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-        st.markdown("<style>div.stButton:nth-of-type(2) > button { background: linear-gradient(135deg, #065f46, #059669) !important; }</style>", unsafe_allow_html=True)
         if st.button("🟢 EJERCICIO 2", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 2"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-        # Botón Ejercicio 3
-        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-        st.markdown("<style>div.stButton:nth-of-type(3) > button { background: linear-gradient(135deg, #78350f, #d97706) !important; }</style>", unsafe_allow_html=True)
         if st.button("🔶 EJERCICIO 3", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 3"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
-        # Botón Ejercicio 4
-        st.markdown('<div class="main-menu-card">', unsafe_allow_html=True)
-        st.markdown("<style>div.stButton:nth-of-type(4) > button { background: linear-gradient(135deg, #4c1d95, #7c3aed) !important; }</style>", unsafe_allow_html=True)
         if st.button("🟣 EJERCICIO 4", use_container_width=True):
             st.session_state.ejercicio_seleccionado = "Ejercicio 4"
             st.session_state.pagina_actual = "detalle"
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #718096; font-size: 14px;'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #cbd5e1; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>Universidad Nacional del Santa • Análisis Estructural II • Desarrollado por Águila Nilo</p>", unsafe_allow_html=True)
 
 # ==========================================
 # 📊 PANTALLA DE DETALLE DEL EJERCICIO
@@ -157,7 +170,7 @@ else:
     # Enunciados estilizados con letras grandes
     if "Ejercicio 1" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #2563eb; margin-bottom: 25px;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #3b82f6; margin-bottom: 25px;'>
             <h3 style='color: #60a5fa !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 1</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.
@@ -179,7 +192,7 @@ else:
 
     elif "Ejercicio 2" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #059669; margin-bottom: 25px;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #10b981; margin-bottom: 25px;'>
             <h3 style='color: #34d399 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 2 (Clase)</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.
@@ -201,7 +214,7 @@ else:
 
     elif "Ejercicio 3" in ejercicio_activo:
         st.markdown("""
-        <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #d97706; margin-bottom: 25px;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #f59e0b; margin-bottom: 25px;'>
             <h3 style='color: #fbbf24 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 3</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.
@@ -233,7 +246,7 @@ else:
 
     else: # Ejercicio 4
         st.markdown("""
-        <div style='background-color: #1e293b; padding: 20px; border-radius: 15px; border-left: 6px solid #7c3aed; margin-bottom: 25px;'>
+        <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #8b5cf6; margin-bottom: 25px;'>
             <h3 style='color: #a78bfa !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 4</h3>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.
@@ -271,7 +284,7 @@ else:
         st.subheader("🔗 Conectividad de Barras (3D)")
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
-    # --- VISTA PREVIA 3D (con labelpad y márgenes para evitar solapamiento) ---
+    # --- VISTA PREVIA 3D ---
     st.subheader("👁️ Vista Previa 3D de la Estructura")
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
@@ -429,7 +442,6 @@ else:
                     
                     if row["Restringido_X"] or row["Restringido_Y"] or row["Restringido_Z"]:
                         texto_reac = f"N{int(row['Nodo'])} Reacc:\nRx:{rx:.2f}\nRy:{ry:.2f}\nRz:{rz:.2f}"
-                        # Ajustado z - 0.5 para que la etiqueta no tape los nodos
                         ax2.text(x, y, z - 0.5, texto_reac, color='#8e44ad', fontsize=8, fontweight='bold', bbox=dict(facecolor='white', alpha=0.9, edgecolor='#8e44ad', boxstyle='round,pad=0.3'))
 
                 blue_patch, red_patch, gray_patch = mpatches.Patch(color='#3498db', label='Tensión (+)'), mpatches.Patch(color='#e74c3c', label='Compresión (-)'), mpatches.Patch(color='#95a5a6', label='Nulo (0)')
