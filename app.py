@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import streamlit.components.v1 as components
 
-# Configuración inicial
-st.set_page_config(page_title="SYNCRET - Proyectos 3D", page_icon="🏗️️", layout="wide")
+# Configuración inicial con el título personalizado para la tarea
+st.set_page_config(page_title="TAREA - JARA AGUILA NILO", page_icon="🏗️", layout="wide")
 
 # --- DISEÑO VISUAL Y ESTILOS AVANZADOS ---
 st.markdown("""
@@ -21,28 +21,6 @@ st.markdown("""
         background-attachment: fixed;
     }
     
-    h1, h2, h3 { color: #f7fafc !important; text-align: center; font-family: sans-serif; }
-    
-    /* Estilos para hacer las pestañas (Tabs) más grandes, visibles y estéticas */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 52px;
-        background-color: rgba(30, 41, 59, 0.85);
-        border-radius: 12px 12px 0px 0px;
-        padding: 0 12px;
-        font-size: 14px !important;
-        font-weight: 700 !important;
-        color: #cbd5e1 !important;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
-        color: white !important;
-        border-color: rgba(255, 255, 255, 0.4) !important;
-    }
-
     /* Estilos base para los botones interactivos de cada ejercicio */
     .stButton button {
         border-radius: 18px !important;
@@ -139,7 +117,7 @@ if "ejercicio_seleccionado" not in st.session_state:
 # 🏠 PANTALLA PRINCIPAL (MENÚ DE INICIO EN COLUMNA CENTRADA)
 # ==========================================
 if st.session_state.pagina_actual == "menu":
-    # Script JS para limpiar cualquier hash en la URL
+    # Script JS para limpiar hashes no deseados
     components.html("""
         <script>
             if (window.location.hash) {
@@ -161,7 +139,7 @@ if st.session_state.pagina_actual == "menu":
     
     st.markdown("""
         <div style='text-align: center;'>
-            <h1 style='font-size: 38px; font-weight: 700; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
+            <h1 style='font-size: 38px; font-weight: 700; color: #f7fafc; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);'>
                 📊 Sistematización del método de Rigidez
             </h1>
             <p style='color: #cbd5e1; font-size: 20px; font-weight: 400; margin-top: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);'>
@@ -220,14 +198,14 @@ else:
     st.markdown("---")
     ejercicio_activo = st.session_state.ejercicio_seleccionado
     
-    # Título principal con HTML puro para evitar que Streamlit cree hashes en la URL
+    # Título limpio sin generar hashes de anclaje en la URL
     st.markdown(f"<h1 style='text-align: center; color: #f7fafc; font-size: 32px;'>🏗 SYNCRET: {ejercicio_activo}</h1>", unsafe_allow_html=True)
     st.markdown("---")
 
     if "Ejercicio 1" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #3b82f6; margin-bottom: 25px;'>
-            <h3 style='color: #60a5fa !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 1</h3>
+            <div style='color: #60a5fa; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 1</div>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Torre piramidal espacial 3D con 3 apoyos en la base y un nudo superior con carga vertical de 20 Ton.
             </p>
@@ -252,7 +230,7 @@ else:
     elif "Ejercicio 2" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #10b981; margin-bottom: 25px;'>
-            <h3 style='color: #34d399 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 2</h3>
+            <div style='color: #34d399; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 2</div>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Armadura espacial 3D con 4 apoyos en la base, altura de 10.00m y cargas de 60 KN y 80 KN.
             </p>
@@ -277,7 +255,7 @@ else:
     elif "Ejercicio 3" in ejercicio_activo:
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #f59e0b; margin-bottom: 25px;'>
-            <h3 style='color: #fbbf24 !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 3</h3>
+            <div style='color: #fbbf24; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 3</div>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Pirámide espacial con 3 apoyos fijos en la base (A, B, C) de 4.0m x 3.0m, altura de 3.0m y una carga vertical de 18 Ton en el nudo superior D.
             </p>
@@ -312,7 +290,7 @@ else:
     else: # Ejercicio 4
         st.markdown("""
         <div style='background-color: rgba(30, 41, 59, 0.9); padding: 20px; border-radius: 15px; border-left: 6px solid #8b5cf6; margin-bottom: 25px;'>
-            <h3 style='color: #a78bfa !important; margin: 0 0 10px 0; text-align: left;'>📌 Enunciado Ejercicio 4</h3>
+            <div style='color: #a78bfa; font-size: 20px; font-weight: bold; margin-bottom: 10px;'>📌 Enunciado Ejercicio 4</div>
             <p style='color: #e2e8f0; font-size: 18px; line-height: 1.5; margin: 0;'>
                 Torre piramidal espacial con 4 apoyos en la base de 5.0m x 3.0m, altura de 3.5m y carga vertical de 14 Tn en el nudo superior D.
             </p>
@@ -346,14 +324,14 @@ else:
 
     col_nodos, col_barras = st.columns(2)
     with col_nodos:
-        st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>📍 Coordenadas y Cargas (3D)</h3>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-bottom: 8px;'>📍 Coordenadas y Cargas (3D)</div>", unsafe_allow_html=True)
         nodos_df = st.data_editor(nodos_default, num_rows="dynamic", key=f"nodos_{ejercicio_activo}", use_container_width=True)
     with col_barras:
-        st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>🔗 Conectividad de Barras (3D)</h3>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-bottom: 8px;'>🔗 Conectividad de Barras (3D)</div>", unsafe_allow_html=True)
         barras_df = st.data_editor(barras_default, num_rows="dynamic", key=f"barras_{ejercicio_activo}", use_container_width=True)
 
     # --- VISTA PREVIA 3D (CON ETIQUETADO DE BARRAS EN ROJO) ---
-    st.markdown("<h3 style='font-size: 18px; color: #f7fafc;'>👁️ Vista Previa 3D de la Estructura</h3>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size: 18px; font-weight: bold; color: #f7fafc; margin-top: 15px; margin-bottom: 8px;'>👁️ Vista Previa 3D de la Estructura</div>", unsafe_allow_html=True)
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(projection='3d')
     fig.patch.set_facecolor('#f0f2f6')
