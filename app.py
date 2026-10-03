@@ -227,13 +227,13 @@ elif st.session_state.pagina_actual == "conclusiones":
                 <b>Automatización del Método Matricial:</b> La aplicación del método de rigidez permite sistematizar el cálculo estructural de sistemas espaciales tridimensionales complejos, transformando operaciones algebraicas tediosas en un proceso algorítmico eficiente y preciso.
             </li>
             <li style='margin-bottom: 18px;'>
-                <b>Importancia de la Geometría y Orientación:</b> El cálculo riguroso de los cosenos directores ($l, m, n$) y las longitudes reales ($L$) a partir de las coordenadas nodales es indispensable para realizar una correcta transformación entre el sistema de coordenadas local y global de cada barra.
+                <b>Importancia de la Geometría y Orientación:</b> El cálculo riguroso de los cosenos directores (l, m, n) y las longitudes reales (L) a partir de las coordenadas nodales es indispensable para realizar una correcta transformación entre el sistema de coordenadas local y global de cada barra.
             </li>
             <li style='margin-bottom: 18px;'>
-                <b>Partición Estática Eficiente:</b> La estructuración y partición de la matriz global de rigidez en bloques ($\mathbf{K}_{LL}, \mathbf{K}_{LR}, \mathbf{K}_{RL}, \mathbf{K}_{RR}$) simplifica la resolución matemática del sistema, aislando los grados de libertad libres para determinar los desplazamientos nodales mediante inversión matricial.
+                <b>Partición Estática Eficiente:</b> La estructuración y partición de la matriz global de rigidez en bloques (K_LL, K_LR, K_RL, K_RR) simplifica la resolución matemática del sistema, aislando los grados de libertad libres para determinar los desplazamientos nodales mediante inversión matricial.
             </li>
             <li style='margin-bottom: 18px;'>
-                <b>Validación mediante Equilibrio Estático:</b> La comprobación global de la sumatoria de fuerzas externas frente a las reacciones obtenidas en los apoyos confirmó que los modelos desarrollados satisfacen estrictamente el principio de equilibrio estático ($\sum F = 0$).
+                <b>Validación mediante Equilibrio Estático:</b> La comprobación global de la sumatoria de fuerzas externas frente a las reacciones obtenidas en los apoyos confirmó que los modelos desarrollados satisfacen estrictamente el principio de equilibrio estático (ΣF = 0).
             </li>
             <li style='margin-bottom: 18px;'>
                 <b>Identificación de Elementos Críticos:</b> A través del análisis de las fuerzas internas axiales, se logró clasificar de manera automática el estado mecánico de cada barra (tracción o compresión), facilitando la evaluación del comportamiento estructural ante cargas aplicadas.
